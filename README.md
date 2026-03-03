@@ -5,15 +5,13 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) an
 ## Screenshots
 
 ### Ghostty + tmux + Catppuccin Macchiato
-<!-- ![Terminal setup](screenshots/terminal.png) -->
-
-### AeroSpace tiling
-<!-- ![AeroSpace tiling](screenshots/aerospace.png) -->
+![Terminal setup](screenshots/terminal.png)
 
 ### Neovim
-<!-- ![Neovim](screenshots/nvim.png) -->
+![Neovim](screenshots/nvim.png)
 
-> Add screenshots to `screenshots/` and uncomment the lines above.
+### AeroSpace tiling — Neovim, Claude, yazi, tmux
+![AeroSpace tiling](screenshots/aerospace-tiling.png)
 
 ## Setup on a new Mac
 
