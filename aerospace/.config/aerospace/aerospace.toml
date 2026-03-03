@@ -66,13 +66,12 @@ automatically-unhide-macos-hidden-apps = true
     alt-8 = 'workspace 8'
     alt-9 = 'workspace 9'
 
-    # Named workspaces — assign letters for quick access
-    alt-e = 'workspace e'   # Email
-    alt-m = 'workspace m'   # Messages
-    alt-c = 'workspace c'   # Calendar
-    alt-b = 'workspace b'   # Main project
-    alt-s = 'workspace s'   # Slack/Discord
-    alt-z = 'workspace z'   # Secondary project
+    # Named workspaces (mirrors Raycast hyper key bindings)
+    alt-a = 'workspace a'   # Android Studio
+    alt-i = 'workspace i'   # IntelliJ IDEA
+    alt-s = 'workspace s'   # Sublime Text
+    alt-f = 'workspace f'   # Browser (Brave)
+    alt-d = 'workspace d'   # Ghostty (terminal)
 
     # Move window to workspace (add Shift)
     alt-shift-1 = 'move-node-to-workspace 1'
@@ -84,21 +83,19 @@ automatically-unhide-macos-hidden-apps = true
     alt-shift-7 = 'move-node-to-workspace 7'
     alt-shift-8 = 'move-node-to-workspace 8'
     alt-shift-9 = 'move-node-to-workspace 9'
-    alt-shift-e = 'move-node-to-workspace e'
-    alt-shift-m = 'move-node-to-workspace m'
-    alt-shift-c = 'move-node-to-workspace c'
-    alt-shift-b = 'move-node-to-workspace b'
+    alt-shift-a = 'move-node-to-workspace a'
+    alt-shift-i = 'move-node-to-workspace i'
     alt-shift-s = 'move-node-to-workspace s'
-    alt-shift-z = 'move-node-to-workspace z'
+    alt-shift-f = 'move-node-to-workspace f'
+    alt-shift-d = 'move-node-to-workspace d'
 
     # Workspace navigation
     alt-tab = 'workspace-back-and-forth'
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
     # Window management
-    alt-f = 'fullscreen'
     alt-w = 'close'
-    alt-enter = 'exec-and-forget open -na wezterm'
+    alt-enter = 'exec-and-forget open -na ghostty'
 
     # Disable macOS hide (conflicts with tiling)
     cmd-h = []
@@ -112,9 +109,8 @@ automatically-unhide-macos-hidden-apps = true
     # Config reload
     alt-esc = [ 'reload-config', 'mode main' ]
 
-    # Enter modal modes
+    # Enter service mode
     alt-shift-semicolon = 'mode service'
-    alt-a = 'mode apps'
 
 # ──────────────────────────────────────────
 # SERVICE MODE — Layout resets, volume, etc.
@@ -126,16 +122,4 @@ automatically-unhide-macos-hidden-apps = true
     down = 'volume down'
     up = 'volume up'
     shift-down = ['volume set 0', 'mode main']
-    alt-esc = [ 'reload-config', 'mode main' ]
-
-# ──────────────────────────────────────────
-# APPS MODE — Quick-launch apps
-# ──────────────────────────────────────────
-[mode.apps.binding]
-    m = ['workspace m', 'exec-and-forget open -a "Messages"', 'mode main']
-    w = ['workspace m', 'exec-and-forget open -a "WhatsApp"', 'mode main']
-    s = ['workspace s', 'exec-and-forget open -a "Slack"', 'mode main']
-    t = ['workspace m', 'exec-and-forget open -a "Telegram"', 'mode main']
-    d = ['workspace s', 'exec-and-forget open -a "Discord"', 'mode main']
-    c = ['workspace c', 'exec-and-forget open -a "Calendar"', 'mode main']
     alt-esc = [ 'reload-config', 'mode main' ]

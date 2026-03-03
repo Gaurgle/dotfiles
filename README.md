@@ -2,6 +2,19 @@
 
 Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) and [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle).
 
+## Screenshots
+
+### Ghostty + tmux + Catppuccin Macchiato
+<!-- ![Terminal setup](screenshots/terminal.png) -->
+
+### AeroSpace tiling
+<!-- ![AeroSpace tiling](screenshots/aerospace.png) -->
+
+### Neovim
+<!-- ![Neovim](screenshots/nvim.png) -->
+
+> Add screenshots to `screenshots/` and uncomment the lines above.
+
 ## Setup on a new Mac
 
 ```bash
@@ -18,7 +31,7 @@ brew bundle
 # Symlink all configs
 stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zellij zed zen-omp gh ideavim
 
-# Install tmux plugins (open tmux, then prefix + I)
+# Install tmux plugins — open tmux, then prefix + I
 ```
 
 ## Stow packages
@@ -42,7 +55,9 @@ stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zell
 | zen-omp | `~/.config/zen-omp.toml` |
 | zsh | `~/.zshrc`, `~/.zshenv`, `~/.zprofile` |
 
-## Modifier key philosophy
+## Modifier keys
+
+Each modifier has a dedicated role — no conflicts.
 
 | Key | Role |
 |-----|------|
@@ -55,9 +70,32 @@ stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zell
 
 ### Karabiner
 
-- **Caps Lock** (hold) → Hyper key (Ctrl+Shift+Alt+Cmd) — used for app launching and global shortcuts
+- **Caps Lock** (hold) → Hyper key (Ctrl+Shift+Alt+Cmd) — app launching and global shortcuts via Raycast
 - **Caps Lock** (tap) → Escape
-- External keyboard: grave/tilde and non-US backslash are swapped (ANSI layout fix)
+- External keyboard: grave/tilde and non-US backslash swapped (ANSI layout fix)
+
+### Raycast (Hyper key app shortcuts)
+
+| Hyper+ | App |
+|--------|-----|
+| A | Android Studio |
+| B | Bruno |
+| C | ChatGPT |
+| D | Ghostty |
+| F | Brave Browser |
+| I | IntelliJ IDEA |
+| M | Mail |
+| N | Notes |
+| O | Finder |
+| R | Calculator |
+| S | Sublime Text |
+| V | Claude |
+| X | Sublime Merge |
+| Z | Zed |
+| 2 | Messages |
+| [ | DataGrip |
+| ; | VS Code |
+| ' | WebStorm |
 
 ### AeroSpace (tiling window manager)
 
@@ -71,51 +109,54 @@ All bindings use **Option (Alt)** as the modifier.
 | `opt+shift+h/j/k/l` | Move window left/down/up/right |
 | `opt+cmd+h/j/k/l` | Join window into container |
 
-**Workspaces:**
+**Workspaces (mirrors Raycast hyper keys):**
 
-| Bind | Action |
-|------|--------|
-| `opt+1-9` | Switch to numbered workspace |
-| `opt+b` | Workspace b (main project) |
-| `opt+e` | Workspace e (email) |
-| `opt+m` | Workspace m (messages) |
-| `opt+c` | Workspace c (calendar) |
-| `opt+s` | Workspace s (Slack/Discord) |
-| `opt+z` | Workspace z (secondary project) |
-| `opt+shift+<key>` | Move window to that workspace |
-| `opt+tab` | Toggle previous workspace |
-| `opt+shift+tab` | Move workspace to next monitor |
+| Bind | Workspace | App context |
+|------|-----------|-------------|
+| `opt+a` | a | Android Studio |
+| `opt+i` | i | IntelliJ IDEA |
+| `opt+s` | s | Sublime Text |
+| `opt+f` | f | Browser (Brave) |
+| `opt+d` | d | Ghostty (terminal) |
+| `opt+1-9` | 1-9 | General purpose |
+| `opt+shift+<key>` | — | Move window to that workspace |
+| `opt+tab` | — | Toggle previous workspace |
+| `opt+shift+tab` | — | Move workspace to next monitor |
 
 **Window management:**
 
 | Bind | Action |
 |------|--------|
-| `opt+f` | Fullscreen |
 | `opt+w` | Close window |
-| `opt+enter` | New WezTerm terminal |
+| `opt+enter` | New Ghostty terminal |
 | `opt+/` | Toggle tile horizontal/vertical |
 | `opt+,` | Toggle accordion mode |
 | `opt+-/=` | Resize shrink/grow |
 
-**Modes:**
+**Service mode** (`opt+shift+;` to enter):
 
-| Bind | Action |
-|------|--------|
-| `opt+a` | **Apps mode** — then: `m` Messages, `w` WhatsApp, `s` Slack, `t` Telegram, `d` Discord, `c` Calendar |
-| `opt+shift+;` | **Service mode** — then: `r` reset layout, `f` toggle float, `up/down` volume |
+| Key | Action |
+|-----|--------|
+| `r` | Reset workspace layout |
+| `f` | Toggle floating/tiling |
+| `up/down` | Volume up/down |
+| `esc` | Exit mode |
 
 ### tmux
 
-Prefix: **Ctrl+a** (Ctrl+b also works as secondary)
+Prefix: **Ctrl+a** (`C-b` also works)
 
 | Bind | Action |
 |------|--------|
-| `C-h/j/k/l` | Navigate panes (vim-tmux-navigator, works in nvim too) |
+| `C-h/j/k/l` | Navigate panes (vim-tmux-navigator — seamless with nvim) |
 | `prefix+I` | Install plugins via tpm |
 | `prefix+r` | Reload config |
-| Mouse | Enabled for pane selection and scrolling |
+
+Mouse enabled. Vi mode for copy.
 
 **Plugins:** sensible, vim-tmux-navigator, resurrect, yank, fzf, battery, cpu, online-status, catppuccin (macchiato)
+
+**Status bar:** git branch, directory, app name, cpu, session, battery, date, online status — all themed with Catppuccin Macchiato.
 
 ### Ghostty
 
@@ -126,7 +167,7 @@ Prefix: **Ctrl+a** (Ctrl+b also works as secondary)
 | `cmd+shift+9/8` | Move tab forward/back |
 | `opt+backspace` | Delete word |
 
-Theme: Catppuccin Mocha, font: JetBrainsMono Nerd Font 13pt
+Catppuccin Mocha theme. JetBrainsMono Nerd Font 13pt. Near-opaque background (0.99).
 
 ### IdeaVim (IntelliJ / Android Studio)
 
@@ -136,13 +177,13 @@ Plugins: vim-highlightedyank, vim-commentary, nerdtree
 |------|--------|
 | `C-h` | Open project explorer |
 | `C-l` | Focus editor |
-| `l` (in NERDTree) | Activate/open node |
-| `h` (in NERDTree) | Jump to parent |
+| `l` (NERDTree) | Activate/open node |
+| `h` (NERDTree) | Jump to parent |
 | `Q` | Format selection (gq) |
 
 ### IntelliJ custom keymap ("macOS copy")
 
-Based on Mac OS X 10.5+ with these overrides:
+Based on Mac OS X 10.5+ with custom overrides.
 
 **Hyper key (Caps Lock) shortcuts:**
 
@@ -181,7 +222,7 @@ Based on Mac OS X 10.5+ with these overrides:
 | `lz` | `eza --icons --group-directories-first --grid` |
 | `gitconf` | View `.gitconfig` with syntax highlighting |
 
-**Git aliases (in .gitconfig):**
+**Git aliases (.gitconfig):**
 
 | Alias | Command |
 |-------|---------|
@@ -201,17 +242,17 @@ Based on Mac OS X 10.5+ with these overrides:
 | `git week` | Weekly log with dates |
 
 **Tools:**
-- **zoxide** with pwd hook — `z <fuzzy>` to jump to frequently used dirs, learns from `cd`
+- **zoxide** with pwd hook — `z <fuzzy>` jumps to frequently used dirs, learns from `cd`
 - **oh-my-posh** with zen theme for prompt
 - **zsh-autosuggestions** and **zsh-syntax-highlighting**
 - **eza** as `ls` replacement (via `lz` alias)
 
 ## How stow works
 
-Files live in this repo and are symlinked to `~` via `stow`. Edits to configs are automatically tracked by git.
+All config files live in this repo and get symlinked to `~` via `stow`. Any edits are automatically tracked by git.
 
 ```bash
-stow nvim        # Create symlinks for nvim
+stow nvim        # Create symlinks
 stow -D nvim     # Remove symlinks (unstow)
 stow -R nvim     # Refresh symlinks (restow)
 ```
