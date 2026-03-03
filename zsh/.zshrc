@@ -102,7 +102,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-eval "$(zoxide init zsh)"
+eval "$(zoxide init zsh --hook pwd)"
 alias gitconf="bat ~/.gitconfig --language ini"
 alias gitconfig="bat ~/.gitconfig --language ini"
 alias lz="eza --icons --group-directories-first --grid"
