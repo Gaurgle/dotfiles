@@ -1,0 +1,27 @@
+theme = Catppuccin Mocha
+font-family = JetBrainsMono Nerd Font
+background-opacity = 0.99
+font-size = 13
+cursor-style = bar
+window-padding-x = 10
+window-padding-y = 6
+
+# Keybindings
+
+# Tab selection
+keybind = cmd+digit_1=goto_tab:1
+keybind = cmd+digit_2=goto_tab:2
+keybind = cmd+digit_3=goto_tab:3
+keybind = cmd+digit_4=goto_tab:4
+keybind = cmd+digit_5=goto_tab:5
+keybind = cmd+digit_6=goto_tab:6
+keybind = cmd+digit_7=goto_tab:7
+keybind = cmd+digit_8=goto_tab:8
+keybind = cmd+digit_9=goto_tab:9
+keybind = option+backspace=text:\x17
+keybind = cmd+shift+d=new_split:down
+keybind = cmd+shift+9=move_tab:1
+keybind = cmd+shift+8=move_tab:-1
+
+# Commands
+

@@ -1,0 +1,31 @@
+[user]
+	name = Gaurgle
+	email = justwannagroove@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[pull]
+	rebase = true
+[alias]
+	gac = !git add . && git commit -m
+	lg = log --oneline --graph --decorate --all
+	st = !git status
+	p = push
+	a = add .
+	nb = checkout -b
+	pnb = !git push --set-upstream origin $(git branch --show-current)
+	pl = pull
+	co = checkout
+	cm = commit -m
+	unstage = reset HEAD --
+	last = log -1 HEAD
+	amend = commit --amend --no-edit
+	week = log --oneline --format=\"%C(yellow)%h %C(cyan)%ad %C(white)%s%C(reset)\" --date=format:\"%Y-%m-%d (W%V)\" --reverse
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential

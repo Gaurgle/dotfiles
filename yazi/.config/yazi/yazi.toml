@@ -1,0 +1,24 @@
+[mgr]
+ratio = [2,2,4]
+show_hidden = true
+
+[opener]
+edit = [
+  { run = '${EDITOR:-nvim} "$@"', block = true, for = "unix" },
+]
+open = [
+  { run = 'open "$@"', for = "macos" },
+]
+
+[open]
+prepend_rules = [
+  { mime = "text/*", use = "edit" },
+  { name = "*.conf", use = "edit" },
+  { name = "*.toml", use = "edit" },
+  { name = "*.yaml", use = "edit" },
+  { name = "*.yml", use = "edit" },
+  { name = "*.json", use = "edit" },
+  { name = "*.ini", use = "edit" },
+  { name = "*.cfg", use = "edit" },
+  { name = "*.log", use = "edit" },
+]
