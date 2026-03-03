@@ -1,67 +1,53 @@
 # dotfiles
 
-## Structure
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) and [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle).
 
-```
-dotfiles/
-├── git/
-│   └── .gitconfig
-├── zsh/
-│   ├── .zshrc
-│   └── .zshenv
-├── vim/
-│   └── .vimrc
-├── tmux/
-│   └── .tmux.conf
-├── homebrew/
-│   └── Brewfile
-├── macos/
-│   └── defaults.sh       # macOS settings
-├── install.sh             # Bootstrap script
-├── Makefile               # Alternative to install.sh
-└── README.md
-```
+## Setup on a new Mac
 
-## Key principles
+```bash
+# Install Homebrew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-**1. Automated installation**
-A single command (`make install` or `./install.sh`) that sets up everything — symlinks, packages, shell config.
+# Clone
+git clone https://github.com/Gaurgle/dotfiles ~/.dotfiles
+cd ~/.dotfiles
 
-**2. Symlinks instead of copying**
-Files live in the repo and are symlinked to `~`. Changes are automatically tracked by git. Tools like `stow` or a custom script handle this.
+# Install all packages
+brew bundle
 
-**3. Modular layout**
-Each tool in its own folder. Easy to add/remove parts without affecting the rest.
+# Symlink all configs
+stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zellij zed zen-omp gh ideavim
 
-**4. Brewfile / package list**
-Declarative list of everything to install:
-```ruby
-# Brewfile
-brew "git"
-brew "fzf"
-brew "ripgrep"
-cask "wezterm"
+# Install tmux plugins (open tmux, then prefix + I)
 ```
 
-**5. Idempotent**
-The script should be safe to run multiple times — it only creates what's missing.
+## Stow packages
 
-**6. Secrets stay out**
-API keys, tokens etc. should **never** be committed. Use `.gitignore` or separate files that are sourced locally.
+| Package | Config location |
+|---------|----------------|
+| aerospace | `~/.config/aerospace/aerospace.toml` |
+| btop | `~/.config/btop/` |
+| gh | `~/.config/gh/` |
+| ghostty | `~/.config/ghostty/` |
+| git | `~/.gitconfig`, `~/.config/git/ignore` |
+| ideavim | `~/.ideavimrc` |
+| karabiner | `~/.config/karabiner/` |
+| kitty | `~/.config/kitty/` |
+| nvim | `~/.config/nvim/` |
+| starship | `~/.config/starship/` |
+| tmux | `~/.tmux.conf`, `~/.tmux/plugins/tpm` |
+| yazi | `~/.config/yazi/` |
+| zed | `~/.config/zed/` |
+| zellij | `~/.config/zellij/` |
+| zen-omp | `~/.config/zen-omp.toml` |
+| zsh | `~/.zshrc`, `~/.zshenv`, `~/.zprofile` |
 
-## Useful tools
+## How it works
 
-| Tool | Purpose |
-|------|---------|
-| **GNU Stow** | Symlink management |
-| **chezmoi** | Dotfiles manager with templates and secrets |
-| **yadm** | Git wrapper specifically for dotfiles |
-| **Homebrew Bundle** | Package management via Brewfile |
-| **Nix / home-manager** | Declarative system configuration |
+Files live in this repo and are symlinked to `~` via `stow`. Edits to your configs are automatically tracked by git.
 
-## Tips
+To stow a single package: `stow nvim`
 
-- **Start small** — only add what you actually use
-- **Document** — a short README explaining how to get started
-- **Test on a clean machine** (or in a container) to verify bootstrap works
-- **Tag/branch** if you want to support multiple machines (work vs personal)
+To unstow: `stow -D nvim`
+
+To restow (refresh symlinks): `stow -R nvim`
