@@ -1,0 +1,117 @@
+<keymap version="1" name="macOS copy" parent="Mac OS X 10.5+">
+  <action id="AIAssistant.CodeGeneration.Actions.Specify" />
+  <action id="AIAssistant.Editor.AskAiAssistantInEditor">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt j" second-keystroke="shift ctrl meta alt j" />
+  </action>
+  <action id="ActivateAIAssistantToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt 0" />
+  </action>
+  <action id="ActivateDatabaseToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt 8" second-keystroke="shift ctrl meta alt 8" />
+  </action>
+  <action id="ActivateGradleToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt 6" second-keystroke="shift ctrl meta alt 6" />
+  </action>
+  <action id="ActivateMavenToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt 7" second-keystroke="shift ctrl meta alt 7" />
+  </action>
+  <action id="ActivateRunToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt plus" />
+  </action>
+  <action id="ActivateTerminalToolWindow">
+    <keyboard-shortcut first-keystroke="alt f12" />
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt #10000b4" />
+  </action>
+  <action id="ActivateVersionControlToolWindow">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt 9" second-keystroke="shift ctrl meta alt 9" />
+  </action>
+  <action id="Back">
+    <keyboard-shortcut first-keystroke="meta open_bracket" />
+    <mouse-shortcut keystroke="button4" />
+  </action>
+  <action id="ChooseRunConfiguration">
+    <keyboard-shortcut first-keystroke="ctrl alt r" />
+    <keyboard-shortcut first-keystroke="meta r" />
+  </action>
+  <action id="CommentByBlockComment">
+    <keyboard-shortcut first-keystroke="shift meta w" />
+  </action>
+  <action id="CommentByLineComment">
+    <keyboard-shortcut first-keystroke="shift ctrl meta alt w" />
+  </action>
+  <action id="Console.TableResult.NextPage" />
+  <action id="Console.TableResult.PreviousPage" />
+  <action id="Documentation.Forward">
+    <keyboard-shortcut first-keystroke="meta close_bracket" />
+    <mouse-shortcut keystroke="button5" />
+  </action>
+  <action id="EditorChooseLookupItemDot" />
+  <action id="EditorCodeBlockEnd">
+    <keyboard-shortcut first-keystroke="meta alt down" />
+  </action>
+  <action id="EditorCodeBlockEndWithSelection" />
+  <action id="EditorCodeBlockStart">
+    <keyboard-shortcut first-keystroke="meta alt up" />
+  </action>
+  <action id="EditorCodeBlockStartWithSelection" />
+  <action id="EditorDecreaseFontSize">
+    <keyboard-shortcut first-keystroke="ctrl comma" />
+  </action>
+  <action id="EditorIncreaseFontSize">
+    <keyboard-shortcut first-keystroke="ctrl period" />
+  </action>
+  <action id="EditorMoveToPageBottom">
+    <keyboard-shortcut first-keystroke="meta down" />
+  </action>
+  <action id="EditorMoveToPageTop">
+    <keyboard-shortcut first-keystroke="meta up" />
+  </action>
+  <action id="EditorPageDown">
+    <keyboard-shortcut first-keystroke="meta down" />
+  </action>
+  <action id="EditorPageUp">
+    <keyboard-shortcut first-keystroke="meta up" />
+  </action>
+  <action id="EditorPageUpWithSelection">
+    <keyboard-shortcut first-keystroke="shift page_down" />
+  </action>
+  <action id="FileChooser.GoForward">
+    <keyboard-shortcut first-keystroke="meta close_bracket" />
+    <mouse-shortcut keystroke="button5" />
+  </action>
+  <action id="Forward">
+    <keyboard-shortcut first-keystroke="meta close_bracket" />
+    <mouse-shortcut keystroke="button5" />
+  </action>
+  <action id="GitLab.Merge.Request.List.Refresh" />
+  <action id="GitLab.Merge.Request.Refresh" />
+  <action id="Github.PullRequest.Comments.Reload" />
+  <action id="Github.PullRequest.Details.Reload" />
+  <action id="GotoLine">
+    <keyboard-shortcut first-keystroke="meta alt l" />
+  </action>
+  <action id="NewClass">
+    <keyboard-shortcut first-keystroke="shift meta n" />
+  </action>
+  <action id="NewDir">
+    <keyboard-shortcut first-keystroke="shift meta p" />
+  </action>
+  <action id="NewScratchFile">
+    <keyboard-shortcut first-keystroke="shift meta alt n" />
+  </action>
+  <action id="NextOccurence" />
+  <action id="OpenInlineChatAction">
+    <keyboard-shortcut first-keystroke="shift ctrl g" />
+  </action>
+  <action id="PreviousOccurence" />
+  <action id="ReformatCode">
+    <keyboard-shortcut first-keystroke="meta l" />
+  </action>
+  <action id="Refresh" />
+  <action id="Replace" />
+  <action id="Rerun" />
+  <action id="Run" />
+  <action id="Svn.RefreshWorkingCopies" />
+  <action id="Terminal.GenerateCommandFromText" />
+  <action id="Vcs.Log.Refresh" />
+</keymap>
