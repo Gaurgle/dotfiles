@@ -53,6 +53,80 @@ stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zell
 | zen-omp | `~/.config/zen-omp.toml` |
 | zsh | `~/.zshrc`, `~/.zshenv`, `~/.zprofile` |
 
+## Navigation layers
+
+The setup has three layers of window/pane management stacked on top of each other. Each layer has its own modifier key and its own concept of "windows."
+
+```
+┌─────────────────────────────────────────────────────┐
+│  AeroSpace (opt)         — manages macOS windows    │
+│  ┌───────────────────┐  ┌───────────────────┐       │
+│  │ Ghostty            │  │ Android Studio    │       │
+│  │ ┌───────────────┐  │  │                   │       │
+│  │ │ tmux (C-a)    │  │  │                   │       │
+│  │ │ ┌─────┬─────┐ │  │  │                   │       │
+│  │ │ │nvim │shell│ │  │  │                   │       │
+│  │ │ │     │     │ │  │  │                   │       │
+│  │ │ └─────┴─────┘ │  │  │                   │       │
+│  │ └───────────────┘  │  │                   │       │
+│  └───────────────────┘  └───────────────────┘       │
+└─────────────────────────────────────────────────────┘
+```
+
+### Layer 1: AeroSpace — macOS windows (modifier: `opt`)
+
+The outermost layer. Manages how macOS application windows are arranged on screen. Each workspace is a virtual desktop that can hold multiple app windows tiled side by side.
+
+| Action | Bind |
+|--------|------|
+| Switch workspace | `opt+a/i/s/f/d` or `opt+0-9` |
+| Focus next app window | `opt+h/j/k/l` |
+| Move app window to workspace | `opt+shift+<key>` |
+| Resize app window | `opt+-/=` |
+
+**Example:** `opt+d` to go to the terminal workspace, then `opt+l` to focus the Ghostty window next to Android Studio.
+
+### Layer 2: Ghostty — terminal tabs and splits (modifier: `cmd`)
+
+Inside Ghostty, tabs and splits for running multiple terminal sessions without tmux.
+
+| Action | Bind |
+|--------|------|
+| Switch tab | `cmd+1-9` |
+| Split pane | `cmd+shift+d` |
+| Move tab | `cmd+shift+8/9` |
+
+### Layer 3: tmux — terminal panes and sessions (modifier: `C-a`)
+
+Inside a Ghostty tab, tmux manages panes (splits within one terminal) and windows (tabs within tmux). Sessions persist across disconnects.
+
+| Action | Bind |
+|--------|------|
+| Navigate panes | `C-h/j/k/l` (seamless with nvim) |
+| New window | `C-a c` |
+| Split horizontal | `C-a "` |
+| Split vertical | `C-a %` |
+| Next/prev window | `C-a n` / `C-a p` |
+| Detach session | `C-a d` |
+
+### How they interact
+
+- **AeroSpace** doesn't know about tmux panes — it sees Ghostty as one window
+- **tmux** pane navigation (`C-h/j/k/l`) works seamlessly with nvim via vim-tmux-navigator
+- **Ghostty** splits are independent of tmux — use one or the other, not both
+- To move a terminal to another AeroSpace workspace: it's the whole Ghostty window that moves, including all tmux panes inside it
+
+### Quick mental model
+
+| I want to... | Layer | Bind |
+|--------------|-------|------|
+| Switch from browser to terminal | AeroSpace | `opt+d` |
+| Switch between two tiled apps | AeroSpace | `opt+h/l` |
+| Jump between tmux panes | tmux | `C-h/j/k/l` |
+| Open a new terminal tab | Ghostty | `cmd+t` |
+| Open a new tmux pane | tmux | `C-a %` or `C-a "` |
+| Move an app to another workspace | AeroSpace | `opt+shift+<key>` |
+
 ## Modifier keys
 
 Each modifier has a dedicated role — no conflicts.
