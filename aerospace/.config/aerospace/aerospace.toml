@@ -15,6 +15,7 @@ default-root-container-orientation = 'auto'
 
 # Mouse follows focus across monitors
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+exec-on-workspace-change = ['/bin/bash', '-c', 'tmux refresh-client -S 2>/dev/null']
 
 # Prevent accidental cmd-h hiding apps (common annoyance with tiling WMs)
 automatically-unhide-macos-hidden-apps = true
