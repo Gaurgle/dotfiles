@@ -1,3 +1,13 @@
+[[plugin.prepend_fetchers]]
+id  = "git"
+url = "*"
+run = "git"
+
+[[plugin.prepend_fetchers]]
+id  = "git"
+url = "*/"
+run = "git"
+
 [mgr]
 ratio = [2,2,4]
 show_hidden = true
