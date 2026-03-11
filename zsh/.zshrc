@@ -103,11 +103,32 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 eval "$(zoxide init zsh --hook pwd)"
+
+# Aliases
 alias gitconf="bat ~/.gitconfig --language ini"
 alias gitconfig="bat ~/.gitconfig --language ini"
 alias lz="eza --icons --group-directories-first --grid"
+alias ls="eza --icons --group-directories-first"
+alias ll="eza --icons --group-directories-first --long"
+alias la="eza --icons --group-directories-first --long --all"
+alias tree="eza --icons --tree"
+alias cat="bat"
+
+# Editor
 export EDITOR=nvim
 export VISUAL=nvim
+
+# fzf
+eval "$(fzf --zsh)"
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type d --hidden --follow --exclude .git"
+export FZF_DEFAULT_OPTS=" \
+  --color=bg+:#313244,bg:#1e1e2e,spinner:#f5e0dc,hl:#f38ba8 \
+  --color=fg:#cdd6f4,header:#f38ba8,info:#cba6f7,pointer:#f5e0dc \
+  --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
+  --color=selected-bg:#45475a \
+  --border='rounded' --prompt='> ' --pointer='▶' --marker='✓'"
 eval "$(oh-my-posh init zsh --config ~/.config/zen-omp.toml)"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
