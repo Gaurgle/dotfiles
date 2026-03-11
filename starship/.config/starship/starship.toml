@@ -1,0 +1,25 @@
+# Catppuccin Mocha inspired, minimal like zen-omp theme
+format = """$directory$git_branch$git_status$fill$cmd_duration$line_break$character"""
+
+[directory]
+style = "bold lavender"
+truncation_length = 2
+
+[git_branch]
+style = "bold mauve"
+format = "[$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+
+[character]
+success_symbol = "[❯](lavender)"
+error_symbol = "[❯](red)"
+
+[fill]
+symbol = " "
+
+[cmd_duration]
+min_time = 2000
+style = "bold yellow"
+format = "[$duration]($style)"

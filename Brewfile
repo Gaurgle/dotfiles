@@ -46,6 +46,7 @@ brew "pass"
 brew "pipx"
 brew "postgresql@14", restart_service: :changed
 brew "potrace"
+brew "powerlevel10k"
 brew "procs"
 brew "python-tk@3.14"
 brew "python@3.13"

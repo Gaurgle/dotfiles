@@ -129,8 +129,15 @@ export FZF_DEFAULT_OPTS=" \
   --color=marker:#b4befe,fg+:#cdd6f4,prompt:#cba6f7,hl+:#f38ba8 \
   --color=selected-bg:#45475a \
   --border='rounded' --prompt='> ' --pointer='▶' --marker='✓'"
-eval "$(oh-my-posh init zsh --config ~/.config/zen-omp.toml)"
+# Prompt: Powerlevel10k
+source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Alternative: Oh My Posh (uncomment to switch back)
+# eval "$(oh-my-posh init zsh --config ~/.config/zen-omp.toml)"
 source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 bindkey '\e ' autosuggest-accept
+
+eval $(thefuck --alias)
