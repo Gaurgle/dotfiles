@@ -31,6 +31,12 @@ automatically-unhide-macos-hidden-apps = true
     outer.top =        1
     outer.right =      1
 
+# Force Ghostty windows to tile
+[[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = 'layout tiling'
+
+
 # ──────────────────────────────────────────────
 # MAIN BINDINGS — All use Alt (Option)
 # ──────────────────────────────────────────────
@@ -74,6 +80,7 @@ automatically-unhide-macos-hidden-apps = true
     alt-s = 'workspace s'   # Sublime Text
     alt-f = 'workspace f'   # Browser (Brave)
     alt-d = 'workspace d'   # Ghostty (terminal)
+    alt-m = 'workspace m'   # Monitor (secondary)
 
     # Move window to workspace (add Shift)
     alt-shift-0 = 'move-node-to-workspace 0'
@@ -91,14 +98,17 @@ automatically-unhide-macos-hidden-apps = true
     alt-shift-s = 'move-node-to-workspace s'
     alt-shift-f = 'move-node-to-workspace f'
     alt-shift-d = 'move-node-to-workspace d'
+    alt-shift-m = 'move-node-to-workspace m'
 
     # Workspace navigation
     alt-tab = 'workspace-back-and-forth'
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
+    
+
     # Window management
     alt-w = 'close'
-    alt-enter = 'exec-and-forget open -na ghostty'
+    alt-enter = 'exec-and-forget /Applications/Ghostty.app/Contents/MacOS/ghostty'
 
     # Disable macOS hide (conflicts with tiling)
     cmd-h = []
