@@ -141,3 +141,4 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 bindkey '\e ' autosuggest-accept
 
 eval $(thefuck --alias)
+PATH=$(pyenv root)/shims:$PATH
