@@ -27,7 +27,7 @@ cd ~/.dotfiles
 brew bundle
 
 # Symlink all configs
-stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zellij zed zen-omp gh ideavim
+stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k starship television tmux yazi zed zellij zen-omp zsh
 
 # Install tmux plugins — open tmux, then prefix + I
 ```
@@ -37,15 +37,20 @@ stow aerospace tmux zsh git nvim karabiner ghostty kitty starship yazi btop zell
 | Package | Config location |
 |---------|----------------|
 | aerospace | `~/.config/aerospace/aerospace.toml` |
+| bat | `~/.config/bat/` |
 | btop | `~/.config/btop/` |
 | gh | `~/.config/gh/` |
 | ghostty | `~/.config/ghostty/config` |
 | git | `~/.gitconfig`, `~/.config/git/ignore` |
 | ideavim | `~/.ideavimrc` |
+| jetbrains | Reference keymap (`macOS copy.xml`) |
 | karabiner | `~/.config/karabiner/` |
 | kitty | `~/.config/kitty/` |
+| lazygit | `~/.config/lazygit/config.yml` |
 | nvim | `~/.config/nvim/` |
+| p10k | `~/.p10k.zsh` |
 | starship | `~/.config/starship/` |
+| television | `~/.config/television/config.toml` |
 | tmux | `~/.tmux.conf`, `~/.tmux/plugins/tpm` |
 | yazi | `~/.config/yazi/` |
 | zed | `~/.config/zed/` |
@@ -291,7 +296,12 @@ Based on Mac OS X 10.5+ with custom overrides.
 
 | Alias | Command |
 |-------|---------|
+| `ls` | `eza --icons --group-directories-first` |
+| `ll` | `eza --icons --group-directories-first --long` |
+| `la` | `eza --icons --group-directories-first --long --all` |
 | `lz` | `eza --icons --group-directories-first --grid` |
+| `tree` | `eza --icons --tree` |
+| `cat` | `bat` |
 | `gitconf` | View `.gitconfig` with syntax highlighting |
 
 **Git aliases (.gitconfig):**
@@ -313,11 +323,19 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `git last` | Show last commit |
 | `git week` | Weekly log with dates |
 
+**Functions:**
+
+| Function | Description |
+|----------|-------------|
+| `fcount` | Count files and dirs in cwd; `fcount dir` for dirs only; `fcount ext` for files by extension |
+
 **Tools:**
+- **Powerlevel10k** prompt theme
 - **zoxide** with pwd hook — `z <fuzzy>` jumps to frequently used dirs, learns from `cd`
-- **oh-my-posh** with zen theme for prompt
+- **television** (`tv`) — fuzzy finder initialized in shell
 - **zsh-autosuggestions** and **zsh-syntax-highlighting**
-- **eza** as `ls` replacement (via `lz` alias)
+- **eza** as `ls`/`tree` replacement
+- **bat** as `cat` replacement
 
 ## How stow works
 
