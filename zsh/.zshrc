@@ -113,6 +113,16 @@ alias ll="eza --icons --group-directories-first --long"
 alias la="eza --icons --group-directories-first --long --all"
 alias tree="eza --icons --tree"
 alias cat="bat"
+fcount() {
+  if [[ -z "$1" ]]; then
+    echo "files: $(find . -type f | wc -l | tr -d ' ')"
+    echo "dirs:  $(find . -type d | wc -l | tr -d ' ')"
+  elif [[ "$1" == "dir" || "$1" == "dirs" || "$1" == "directories" ]]; then
+    find . -type d | wc -l | tr -d ' '
+  else
+    ls **/*.$1 | wc -l
+  fi
+}
 
 # Editor
 export EDITOR=nvim
