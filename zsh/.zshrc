@@ -124,6 +124,41 @@ fcount() {
   fi
 }
 
+fsize() {
+  local target="${1:-.}"
+  local show_tree=false
+
+  if [[ "$1" == "tree" ]]; then
+    show_tree=true
+    target="${2:-.}"
+  fi
+
+  if [[ -f "$target" ]]; then
+    echo "  $target: $(du -sh "$target" | cut -f1)"
+    return
+  fi
+
+  if [[ ! -d "$target" ]]; then
+    echo "fsize: '$target' not found"
+    return 1
+  fi
+
+  if $show_tree; then
+    eza --icons --tree "$target"
+    echo ""
+  fi
+
+  local size=$(du -sh "$target" | cut -f1)
+  local files=$(find "$target" -type f | wc -l | tr -d ' ')
+
+  echo "  Size:  $size"
+  echo "  Files: $files"
+  echo "  Types:"
+  find "$target" -type f -name '*.*' | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -12 | while read count ext; do
+    printf "    %4s  %s\n" "$count" "$ext"
+  done
+}
+
 # Editor
 export EDITOR=nvim
 export VISUAL=nvim
@@ -142,4 +177,6 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 bindkey '\e ' autosuggest-accept
 
 eval $(thefuck --alias)
+PATH=$(pyenv root)/shims:$PATH
+PATH=$(pyenv root)/shims:$PATH
 PATH=$(pyenv root)/shims:$PATH
