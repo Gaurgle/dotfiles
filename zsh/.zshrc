@@ -118,7 +118,8 @@ fcount() {
     echo "files: $(find . -type f | wc -l | tr -d ' ')"
     echo "dirs:  $(find . -type d | wc -l | tr -d ' ')"
   elif [[ "$1" == "dir" || "$1" == "dirs" || "$1" == "directories" ]]; then
-    find . -type d | wc -l | tr -d ' '
+    echo "dirs:    $(find . -maxdepth 1 -type d | tail -n +2 | wc -l | tr -d ' ')"
+    echo "subdirs: $(find . -mindepth 2 -type d | wc -l | tr -d ' ')"
   else
     ls **/*.$1 | wc -l
   fi
