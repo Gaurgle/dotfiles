@@ -176,7 +176,7 @@ Each modifier has a dedicated role — no conflicts.
 
 ### AeroSpace (tiling window manager)
 
-All bindings use **Option (Alt)** as the modifier.
+All bindings use **Option (Alt)** as the modifier. JankyBorders runs on startup for visual focus feedback. Workspace changes refresh tmux status bar.
 
 **Focus & move (vim-style):**
 
@@ -195,7 +195,8 @@ All bindings use **Option (Alt)** as the modifier.
 | `opt+s` | s | Sublime Text |
 | `opt+f` | f | Browser (Brave) |
 | `opt+d` | d | Ghostty (terminal) |
-| `opt+1-9` | 1-9 | General purpose |
+| `opt+m` | m | Monitor (secondary) |
+| `opt+0-9` | 0-9 | General purpose |
 | `opt+shift+<key>` | — | Move window to that workspace |
 | `opt+tab` | — | Toggle previous workspace |
 | `opt+shift+tab` | — | Move workspace to next monitor |
@@ -206,6 +207,7 @@ All bindings use **Option (Alt)** as the modifier.
 |------|--------|
 | `opt+w` | Close window |
 | `opt+enter` | New Ghostty terminal |
+| `opt+esc` | Reload config |
 | `opt+/` | Toggle tile horizontal/vertical |
 | `opt+,` | Toggle accordion mode |
 | `opt+-/=` | Resize shrink/grow |
@@ -217,6 +219,7 @@ All bindings use **Option (Alt)** as the modifier.
 | `r` | Reset workspace layout |
 | `f` | Toggle floating/tiling |
 | `up/down` | Volume up/down |
+| `shift+down` | Mute (volume 0) |
 | `esc` | Exit mode |
 
 ### tmux
@@ -226,14 +229,17 @@ Prefix: **Ctrl+a** (`C-b` also works)
 | Bind | Action |
 |------|--------|
 | `C-h/j/k/l` | Navigate panes (vim-tmux-navigator — seamless with nvim) |
+| `prefix+H/J/K/L` | Resize panes |
 | `prefix+I` | Install plugins via tpm |
 | `prefix+r` | Reload config |
 
-Mouse enabled. Vi mode for copy.
+Mouse enabled. Vi mode for copy. Windows and panes start at index 1.
 
 **Plugins:** sensible, vim-tmux-navigator, resurrect, yank, fzf, battery, cpu, online-status, catppuccin (macchiato)
 
-**Status bar:** git branch, directory, app name, cpu, session, battery, date, online status — all themed with Catppuccin Macchiato.
+**Status bar (Catppuccin Macchiato):**
+- Left: vim mode indicator, AeroSpace workspace status, git branch
+- Right: directory, application name, cpu, session
 
 ### Ghostty
 
@@ -244,7 +250,7 @@ Mouse enabled. Vi mode for copy.
 | `cmd+shift+9/8` | Move tab forward/back |
 | `opt+backspace` | Delete word |
 
-Catppuccin Mocha theme. JetBrainsMono Nerd Font 13pt. Near-opaque background (0.99).
+Catppuccin Mocha theme. MesloLGS Nerd Font 13pt. Cursor style: bar. Near-opaque background (0.99).
 
 ### IdeaVim (IntelliJ / Android Studio)
 
@@ -302,7 +308,14 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `lz` | `eza --icons --group-directories-first --grid` |
 | `tree` | `eza --icons --tree` |
 | `cat` | `bat` |
-| `gitconf` | View `.gitconfig` with syntax highlighting |
+| `cpwd` | `pwd \| pbcopy` (copy current path) |
+| `gitconf` / `gitconfig` | View `.gitconfig` with syntax highlighting |
+
+**Git config:**
+- **git-delta** as pager — side-by-side diffs, line numbers, Catppuccin Mocha syntax theme
+- `pull.rebase = true`
+- Git LFS enabled
+- GitHub credential helper via `gh auth`
 
 **Git aliases (.gitconfig):**
 
@@ -328,11 +341,15 @@ Based on Mac OS X 10.5+ with custom overrides.
 | Function | Description |
 |----------|-------------|
 | `fcount` | Count files and dirs in cwd; `fcount dir` for dirs only; `fcount ext` for files by extension |
+| `fsize` | Show size, file count, and type breakdown for a path; `fsize tree <dir>` to include tree view |
 
 **Tools:**
+- **Oh My Zsh** with git plugin
 - **Powerlevel10k** prompt theme
 - **zoxide** with pwd hook — `z <fuzzy>` jumps to frequently used dirs, learns from `cd`
 - **television** (`tv`) — fuzzy finder initialized in shell
+- **thefuck** — auto-corrects previous console commands
+- **pyenv** — Python version management (shims on PATH)
 - **zsh-autosuggestions** and **zsh-syntax-highlighting**
 - **eza** as `ls`/`tree` replacement
 - **bat** as `cat` replacement

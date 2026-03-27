@@ -113,6 +113,7 @@ alias ll="eza --icons --group-directories-first --long"
 alias la="eza --icons --group-directories-first --long --all"
 alias tree="eza --icons --tree"
 alias cat="bat"
+alias cpwd="pwd | pbcopy"
 fcount() {
   if [[ -z "$1" ]]; then
     echo "files: $(find . -type f | wc -l | tr -d ' ')"
