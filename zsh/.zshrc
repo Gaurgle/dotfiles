@@ -1,6 +1,9 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
+# --- Terminal output capture (manual paste) ---
+export __ZSH_LAST_OUTPUT=""
+
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -159,6 +162,15 @@ fsize() {
   find "$target" -type f -name '*.*' | sed 's/.*\.//' | sort | uniq -c | sort -rn | head -12 | while read count ext; do
     printf "    %4s  %s\n" "$count" "$ext"
   done
+}
+
+# Copy command output to clipboard (disable pagers)
+cpl() {
+  if [[ $# -eq 0 ]]; then
+    echo "Usage: cpl <command> [args...]"
+    return 1
+  fi
+  PAGER=cat "$@" 2>&1 | tee /dev/tty | sed 's/^/"/;s/$/"/' | pbcopy
 }
 
 # Editor
