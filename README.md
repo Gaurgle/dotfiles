@@ -342,6 +342,10 @@ Based on Mac OS X 10.5+ with custom overrides.
 |----------|-------------|
 | `fcount` | Count files and dirs in cwd; `fcount dir` for dirs only; `fcount ext` for files by extension |
 | `fsize` | Show size, file count, and type breakdown for a path; `fsize tree <dir>` to include tree view |
+| `note <title>` | Quick note — creates `~/notes/0_quick-notes/<date>-<title>.md` and opens in nvim |
+| `notes` | Browse `~/notes` in yazi |
+| `notesearch <query>` | Search all notes with rg + fzf (bat preview); `notefind` is an alias |
+| `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
 
 **Tools:**
 - **Oh My Zsh** with git plugin
