@@ -191,6 +191,58 @@ source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zs
 bindkey '\e ' autosuggest-accept
 
 eval $(thefuck --alias)
+
+# --- Notes ---
+NOTES_DIR="$HOME/notes"
+
+note() {
+  local date=$(date +%Y-%m-%d)
+  local title="${1:-untitled}"
+  local dir="$NOTES_DIR/0_quick-notes"
+  mkdir -p "$dir"
+  local file="$dir/${date}-${title}.md"
+  echo "# ${title}\n\nDate: ${date}\n" > "$file"
+  $EDITOR "+4" -c "startinsert" "$file"
+}
+
+notes() {
+  local folder=$(find "$NOTES_DIR" -maxdepth 1 -type d ! -path "$NOTES_DIR" -exec basename {} \; | sort | fzf --prompt="Pick a folder: " --tac)
+  [[ -z "$folder" ]] && return
+
+  local target="$NOTES_DIR/$folder"
+
+  while true; do
+    local subdirs=$(find "$target" -maxdepth 1 -type d ! -path "$target" 2>/dev/null)
+    [[ -z "$subdirs" ]] && break
+    local sub=$({ echo "."; find "$target" -maxdepth 1 -type d ! -path "$target" -exec basename {} \; | sort } | fzf --prompt="$(basename $target)/ (. = here) > " --tac --preview "[[ {} != '.' ]] && eza --tree --only-dirs '$target/{}' || echo 'Place note here'")
+    [[ -z "$sub" ]] && return
+    [[ "$sub" == "." ]] && break
+    target="$target/$sub"
+  done
+
+  printf "Note title: "
+  read title
+  [[ -z "$title" ]] && return
+
+  local date=$(date +%Y-%m-%d)
+  local file="$target/${date}-${title}.md"
+  echo "# ${title}\n\nDate: ${date}\n" > "$file"
+  $EDITOR "+4" -c "startinsert" "$file"
+}
+
+search_notes() {
+  rg "$1" "$NOTES_DIR" | fzf --preview 'bat --color=always $(echo {} | cut -d: -f1)'
+}
+
+log() {
+  local date=$(date +%Y-%m-%d)
+  local file="$NOTES_DIR/0_quick-notes/daily-${date}.md"
+  mkdir -p "$NOTES_DIR/0_quick-notes"
+  if [[ ! -f "$file" ]]; then
+    echo "# Work Log - ${date}\n" > "$file"
+  fi
+  echo "$(date +%H:%M) - $*" >> "$file"
+}
 PATH=$(pyenv root)/shims:$PATH
 PATH=$(pyenv root)/shims:$PATH
 PATH=$(pyenv root)/shims:$PATH
