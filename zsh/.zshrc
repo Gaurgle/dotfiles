@@ -206,33 +206,13 @@ note() {
 }
 
 notes() {
-  local folder=$(find "$NOTES_DIR" -maxdepth 1 -type d ! -path "$NOTES_DIR" -exec basename {} \; | sort | fzf --prompt="Pick a folder: " --tac)
-  [[ -z "$folder" ]] && return
-
-  local target="$NOTES_DIR/$folder"
-
-  while true; do
-    local subdirs=$(find "$target" -maxdepth 1 -type d ! -path "$target" 2>/dev/null)
-    [[ -z "$subdirs" ]] && break
-    local sub=$({ echo "."; find "$target" -maxdepth 1 -type d ! -path "$target" -exec basename {} \; | sort } | fzf --prompt="$(basename $target)/ (. = here) > " --tac --preview "[[ {} != '.' ]] && eza --tree --only-dirs '$target/{}' || echo 'Place note here'")
-    [[ -z "$sub" ]] && return
-    [[ "$sub" == "." ]] && break
-    target="$target/$sub"
-  done
-
-  printf "Note title: "
-  read title
-  [[ -z "$title" ]] && return
-
-  local date=$(date +%Y-%m-%d)
-  local file="$target/${date}-${title}.md"
-  echo "# ${title}\n\nDate: ${date}\n" > "$file"
-  $EDITOR "+4" -c "startinsert" "$file"
+  yazi "$NOTES_DIR"
 }
 
-search_notes() {
+notesearch() {
   rg "$1" "$NOTES_DIR" | fzf --preview 'bat --color=always $(echo {} | cut -d: -f1)'
 }
+alias notefind=notesearch
 
 log() {
   local date=$(date +%Y-%m-%d)
