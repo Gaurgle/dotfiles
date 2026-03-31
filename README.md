@@ -30,7 +30,38 @@ brew bundle
 stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k starship television tmux yazi zed zellij zen-omp zsh
 
 # Install tmux plugins — open tmux, then prefix + I
+
+# Create notes directory
+mkdir -p ~/notes/0_quick-notes
 ```
+
+## Syncing across machines — `dotsync`
+
+After initial setup, use `dotsync` to keep machines in sync. It reads `.dotcore` to know which packages are essential vs machine-dependent.
+
+```bash
+dotsync    # pull, install missing core packages, stow core configs
+```
+
+What it does:
+1. `git pull` latest dotfiles
+2. Installs missing core brew formulae, casks, and cargo packages
+3. Auto-stows core config packages
+4. Reports optional packages that aren't stowed
+
+### Core vs optional
+
+Defined in `.dotcore`. Core packages are always synced — optional ones (languages, databases, IDE-specific configs) are installed per-machine as needed.
+
+| Core (always synced) | Optional (machine-dependent) |
+|---------------------|------------------------------|
+| bat, btop, eza, fd, fzf, ripgrep, television | Languages: python, openjdk, node, zig, etc. |
+| neovim, lazygit, tmux, gh, git-delta | Databases: mysql, postgresql |
+| zoxide, thefuck, dust, glow, httpie | IDEs: jetbrains, ideavim, zed |
+| aerospace, ghostty, borders | Keyboard: karabiner |
+| Stow: zsh, git, nvim, tmux, bat, etc. | Stow: kitty, zellij, zen-omp, etc. |
+
+Edit `.dotcore` to adjust what's core for your setup.
 
 ## Stow packages
 
@@ -340,12 +371,14 @@ Based on Mac OS X 10.5+ with custom overrides.
 
 | Function | Description |
 |----------|-------------|
+| `cpl <cmd>` | Run command and copy output to clipboard |
 | `fcount` | Count files and dirs in cwd; `fcount dir` for dirs only; `fcount ext` for files by extension |
 | `fsize` | Show size, file count, and type breakdown for a path; `fsize tree <dir>` to include tree view |
 | `note <title>` | Quick note — creates `~/notes/0_quick-notes/<date>-<title>.md` and opens in nvim |
 | `notes` | Browse `~/notes` in yazi |
 | `notesearch <query>` | Search all notes with rg + fzf (bat preview); `notefind` is an alias |
 | `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
+| `dotsync` | Pull dotfiles, install missing core packages, stow core configs |
 
 **Tools:**
 - **Oh My Zsh** with git plugin
