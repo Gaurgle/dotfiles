@@ -224,5 +224,100 @@ log() {
   echo "$(date +%H:%M) - $*" >> "$file"
 }
 PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH
+
+# --- Dotfiles sync ---
+_dotcore_section() {
+  sed -n "/^\[$1\]/,/^\[/{/^\[/d;/^#/d;/^$/d;p}" ~/.dotfiles/.dotcore
+}
+
+dotsync() {
+  local startdir="$PWD"
+  cd ~/.dotfiles || return 1
+
+  echo "==> Pulling latest dotfiles..."
+  git pull
+
+  # --- Brew taps ---
+  local missing_taps=()
+  while IFS= read -r tap; do
+    brew tap | grep -qx "$tap" || missing_taps+=("$tap")
+  done < <(_dotcore_section tap)
+  if [[ ${#missing_taps[@]} -gt 0 ]]; then
+    echo "\n==> Adding brew taps..."
+    for tap in "${missing_taps[@]}"; do brew tap "$tap"; done
+  fi
+
+  # --- Brew formulae ---
+  local installed_formulae=$(brew list --formula -1)
+  local missing_brew=()
+  while IFS= read -r pkg; do
+    echo "$installed_formulae" | grep -qx "$pkg" || missing_brew+=("$pkg")
+  done < <(_dotcore_section brew; _dotcore_section brew-tap)
+  if [[ ${#missing_brew[@]} -gt 0 ]]; then
+    echo "\n==> Installing missing core formulae:"
+    printf "  %s\n" "${missing_brew[@]}"
+    brew install "${missing_brew[@]}"
+  fi
+
+  # --- Brew casks ---
+  local installed_casks=$(brew list --cask -1)
+  local missing_casks=()
+  while IFS= read -r pkg; do
+    echo "$installed_casks" | grep -qx "$pkg" || missing_casks+=("$pkg")
+  done < <(_dotcore_section cask)
+  if [[ ${#missing_casks[@]} -gt 0 ]]; then
+    echo "\n==> Installing missing core casks:"
+    printf "  %s\n" "${missing_casks[@]}"
+    brew install --cask "${missing_casks[@]}"
+  fi
+
+  # --- Cargo packages ---
+  local missing_cargo=()
+  while IFS= read -r pkg; do
+    cargo install --list 2>/dev/null | grep -q "^$pkg " || missing_cargo+=("$pkg")
+  done < <(_dotcore_section cargo)
+  if [[ ${#missing_cargo[@]} -gt 0 ]]; then
+    echo "\n==> Installing missing cargo packages:"
+    printf "  %s\n" "${missing_cargo[@]}"
+    cargo install "${missing_cargo[@]}"
+  fi
+
+  # --- Stow core packages ---
+  local stowed=0
+  while IFS= read -r pkg; do
+    [[ -d "$pkg" ]] || continue
+    local has_link=false
+    while IFS= read -r f; do
+      local target="$HOME/${f#$pkg/}"
+      [[ -L "$target" ]] && { has_link=true; break; }
+    done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
+    if ! $has_link; then
+      echo "==> Stowing $pkg..."
+      stow "$pkg" && ((stowed++))
+    fi
+  done < <(_dotcore_section stow)
+
+  # --- Report optional unstowed packages ---
+  local core_stow=$(_dotcore_section stow)
+  local optional=()
+  for dir in */; do
+    [[ "$dir" == screenshots/ ]] && continue
+    local pkg="${dir%/}"
+    echo "$core_stow" | grep -qx "$pkg" && continue
+    local has_link=false
+    while IFS= read -r f; do
+      local target="$HOME/${f#$pkg/}"
+      [[ -L "$target" ]] && { has_link=true; break; }
+    done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
+    $has_link || optional+=("$pkg")
+  done
+
+  echo "\n==> Sync complete."
+  [[ $stowed -gt 0 ]] && echo "  Stowed $stowed new core packages."
+  if [[ ${#optional[@]} -gt 0 ]]; then
+    echo "  Optional packages not stowed:"
+    printf "    %s\n" "${optional[@]}"
+  fi
+
+  cd "$startdir"
+}
