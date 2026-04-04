@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
 # --- Terminal output capture (manual paste) ---
 export __ZSH_LAST_OUTPUT=""
@@ -179,50 +179,29 @@ export VISUAL=nvim
 
 # television (fuzzy finder)
 eval "$(tv init zsh)"
+# Detect Homebrew prefix (portable across Intel/Apple Silicon)
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  BREW_PREFIX=/opt/homebrew
+else
+  BREW_PREFIX=/usr/local
+fi
+
 # Prompt: Powerlevel10k
-source $(brew --prefix)/share/powerlevel10k/powerlevel10k.zsh-theme
+source $BREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Alternative: Oh My Posh (uncomment to switch back)
 # eval "$(oh-my-posh init zsh --config ~/.config/zen-omp.toml)"
-source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 bindkey '\e ' autosuggest-accept
 
 eval $(thefuck --alias)
 
-# --- Notes ---
-NOTES_DIR="$HOME/notes"
-
-note() {
-  local date=$(date +%Y-%m-%d)
-  local title="${1:-untitled}"
-  local dir="$NOTES_DIR/0_quick-notes"
-  mkdir -p "$dir"
-  local file="$dir/${date}-${title}.md"
-  echo "# ${title}\n\nDate: ${date}\n" > "$file"
-  $EDITOR "+4" -c "startinsert" "$file"
-}
-
-notes() {
-  yazi "$NOTES_DIR"
-}
-
-notesearch() {
-  rg "$1" "$NOTES_DIR" | fzf --preview 'bat --color=always $(echo {} | cut -d: -f1)'
-}
-alias notefind=notesearch
-
-log() {
-  local date=$(date +%Y-%m-%d)
-  local file="$NOTES_DIR/0_quick-notes/daily-${date}.md"
-  mkdir -p "$NOTES_DIR/0_quick-notes"
-  if [[ ! -f "$file" ]]; then
-    echo "# Work Log - ${date}\n" > "$file"
-  fi
-  echo "$(date +%H:%M) - $*" >> "$file"
-}
+# --- notez noglob overrides (prevent zsh glob expansion on ? and *) ---
+alias zlog='noglob zlog'
+alias znote='noglob znote'
 PATH=$(pyenv root)/shims:$PATH
 
 # --- Dotfiles sync ---
@@ -321,3 +300,4 @@ dotsync() {
 
   cd "$startdir"
 }
+eval "$(atuin init zsh)"
