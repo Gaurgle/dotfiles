@@ -301,3 +301,4 @@ dotsync() {
   cd "$startdir"
 }
 eval "$(atuin init zsh)"
+export COLUMNS
