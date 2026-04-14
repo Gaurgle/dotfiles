@@ -111,6 +111,7 @@ eval "$(zoxide init zsh --hook pwd)"
 alias gitconf="bat ~/.gitconfig --language ini"
 alias gitconfig="bat ~/.gitconfig --language ini"
 alias lz="eza --icons --group-directories-first --grid"
+alias lz.="eza --icons --group-directories-first --grid --all"
 alias ls="eza --icons --group-directories-first"
 alias ll="eza --icons --group-directories-first --long"
 alias la="eza --icons --group-directories-first --long --all"
@@ -302,3 +303,5 @@ dotsync() {
 }
 eval "$(atuin init zsh)"
 export COLUMNS
+PATH=$(pyenv root)/shims:$PATH
+PATH=$(pyenv root)/shims:$PATH
