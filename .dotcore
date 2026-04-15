@@ -1,68 +1,143 @@
-# Core packages — always synced across machines
-# Used by dotsync to auto-install and auto-stow
+# Core packages — always installed (no prompt)
+# Used by dotsync to auto-install and auto-stow.
+# Sections suffixed with `-langs`, `-db` etc. are prompted per machine
+# and remembered in ~/.dotup-prefs.
 
 [brew]
-bat
-btop
-bandwhich
-doppler
-dust
-eza
-fd
-fzf
-gh
-git-delta
-glow
-httpie
-jq
-lazydocker
-lazygit
-lua-language-server
-neovim
-powerlevel10k
-procs
-ripgrep
-stow
-stylua
-television
-thefuck
-tldr
-tmux
-tokei
-tpm
-trippy
-yazi
-zoxide
-zsh-autosuggestions
-zsh-syntax-highlighting
+astro                       # Astro web framework CLI
+atuin                       # magical shell history with sync
+bandwhich                   # bandwidth monitor by process
+bat                         # cat with syntax highlighting
+btop                        # resource monitor (top alt)
+curl                        # HTTP client
+docker                      # container runtime CLI
+doppler                     # secrets manager CLI
+dust                        # du alt, disk usage tree
+entr                        # run commands on file change
+eza                         # ls alt with icons/colors
+fastfetch                   # system info display
+fd                          # find alt, simpler & faster
+fswatch                     # filesystem event watcher
+fzf                         # fuzzy finder
+gh                          # GitHub CLI
+git-delta                   # diff pager with syntax highlighting
+git-filter-repo             # rewrite git history
+glow                        # markdown renderer for terminal
+gping                       # ping with live graph
+grex                        # regex generator from examples
+httpie                      # HTTP client, friendly syntax
+imagemagick                 # image manipulation toolkit
+jq                          # JSON processor
+lazydocker                  # TUI for Docker
+lazygit                     # TUI for Git
+lazysql                     # TUI for SQL
+lua-language-server         # LSP for Lua (neovim configs)
+nano                        # simple text editor
+neovim                      # modern vim
+nload                       # network bandwidth monitor
+node@20                     # Node.js v20 LTS
+numpy                       # Python scientific computing
+oh-my-posh                  # prompt theme engine
+onefetch                    # git repo info display
+pass                        # CLI password manager (gpg)
+pipx                        # install Python CLIs in isolated venvs
+poppler                     # PDF rendering + utilities
+powerlevel10k               # zsh theme
+procs                       # ps alt
+pyenv                       # Python version manager
+python@3.12                 # Python 3.12
+ripgrep                     # grep alt, very fast
+starship                    # cross-shell prompt
+stow                        # symlink manager (used by dotsync)
+stylua                      # Lua formatter
+television                  # cross-shell fuzzy finder (`tv`)
+thefuck                     # corrects mistyped commands
+tldr                        # simplified man pages
+tmux                        # terminal multiplexer
+tmux-sessionizer            # tmux session helper
+tokei                       # code stats by language
+tpm                         # tmux plugin manager
+trippy                      # traceroute TUI
+yazi                        # terminal file manager
+zoxide                      # smarter cd (`z`)
+zsh-autosuggestions         # fish-like autosuggestions
+zsh-syntax-highlighting     # syntax highlighting for zsh
 
 [tap]
-felixkratz/formulae
+felixkratz/formulae         # for borders / jankyborders
+anomalyco/tap               # for opencode
+fsouza/prettierd            # for prettierd
 
 [brew-tap]
-felixkratz/formulae/borders
+felixkratz/formulae/borders         # window borders (aerospace companion)
+anomalyco/tap/opencode              # opencode AI coding agent
+fsouza/prettierd/prettierd          # prettier daemon, fast format-on-save
 
 [cask]
-aerospace
-ghostty
+aerospace                           # tiling window manager
+bruno                               # API client (Postman alt, git-friendly)
+claude                              # Claude desktop app
+claude-code                         # Claude Code CLI installer
+codex                               # OpenAI Codex CLI
+copilot-cli                         # GitHub Copilot CLI
+devtoys                             # dev utilities GUI (formatters, encoders, etc.)
+font-jetbrains-mono-nerd-font       # JetBrains Mono w/ nerd icons
+font-meslo-lg-nerd-font             # Meslo LG w/ nerd icons (p10k recommended)
+ghostty                             # GPU-accelerated terminal
+karabiner-elements                  # keyboard remapper
+raycast                             # launcher / spotlight replacement
+sublime-merge                       # git GUI client
+zed                                 # high-performance code editor
 
 [cargo]
-presenterm
-tmuxcc
+presenterm                          # terminal slideshow tool
+tmuxcc                              # tmux config helper
 
 [stow]
-aerospace
-bat
-btop
-gh
-ghostty
-git
-lazygit
-nvim
-p10k
-scripts
-starship
-television
-tmux
-yazi
-zsh
+aerospace                           # aerospace config
+bat                                 # bat config
+btop                                # btop config
+claude                              # Claude Code config
+gh                                  # GitHub CLI config
+ghostty                             # ghostty config
+git                                 # git config
+ideavim                             # IdeaVim config
+jetbrains                           # JetBrains IDE configs
+karabiner                           # Karabiner profiles
+lazygit                             # lazygit config
+nvim                                # Neovim config
+p10k                                # powerlevel10k config
+scripts                             # personal CLI scripts (~/.local/bin)
+starship                            # starship config
+television                          # television config
+tmux                                # tmux config
+yazi                                # yazi config
+zed                                 # Zed config
+zellij                              # zellij config
+zen-omp                             # oh-my-posh "zen" theme
+zsh                                 # .zshrc and friends
+
+# --- Optional sections (prompted per machine, remembered in ~/.dotup-prefs) ---
+
+[brew-langs]
+basictex                    # minimal LaTeX distribution
+cmake                       # cross-platform build system
+go                          # Go programming language
+gradle                      # JVM build tool (Kotlin/Java)
+kotlin                      # Kotlin compiler
+kotlin-language-server      # LSP for Kotlin
+ktlint                      # Kotlin linter / formatter
+llvm                        # LLVM compiler toolchain
+luarocks                    # Lua package manager
+maven                       # JVM build tool (Java)
+ninja                       # small fast build system (pairs with cmake)
+pandoc                      # document format converter
+zig                         # Zig programming language
+
+[cask-langs]
+temurin@21                  # Eclipse OpenJDK 21 LTS
+
+[brew-db]
+libpq                       # PostgreSQL client library
+mysql                       # MySQL database server
+postgresql@17               # PostgreSQL 17

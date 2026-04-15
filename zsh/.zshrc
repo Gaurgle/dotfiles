@@ -223,7 +223,53 @@ PATH=$(pyenv root)/shims:$PATH
 alias dotup='dotsync && exec zsh'
 
 _dotcore_section() {
-  sed -n "/^\[$1\]/,/^\[/{/^\[/d;/^#/d;/^$/d;p}" ~/.dotfiles/.dotcore
+  # Print non-empty entries from a [section], stripping inline `# comments`.
+  awk -v sec="[$1]" '
+    $0 == sec { in_sec = 1; next }
+    /^\[/    { in_sec = 0 }
+    in_sec {
+      sub(/[ \t]*#.*$/, "")
+      if (NF) print
+    }
+  ' ~/.dotfiles/.dotcore
+}
+
+_dotup_prompt_section() {
+  # Optional section installer with per-host memory.
+  # $1 = section name in .dotcore, $2 = human label, $3 = "brew" or "cask"
+  local section="$1" label="$2" kind="$3"
+  local prefs="$HOME/.dotup-prefs"
+  [[ -f "$prefs" ]] || touch "$prefs"
+  local key="$(hostname -s):$section"
+  local items=$(_dotcore_section "$section")
+  [[ -z "$items" ]] && return
+
+  local cached=$(grep "^${key}=" "$prefs" | tail -1 | cut -d= -f2)
+  local answer
+  if [[ -n "$cached" ]]; then
+    answer="$cached"
+    echo "\n==> $label: remembered choice = $answer (edit ~/.dotup-prefs to change)"
+  else
+    echo "\n==> Optional: $label"
+    echo "$items" | sed 's/^/    /'
+    printf "  Install on this machine? [y/N] "
+    read -r REPLY
+    [[ "$REPLY" =~ ^[Yy]$ ]] && answer=yes || answer=no
+    echo "${key}=${answer}" >> "$prefs"
+  fi
+  [[ "$answer" != yes ]] && return
+
+  local installed
+  [[ "$kind" == cask ]] && installed=$(brew list --cask -1) || installed=$(brew list --formula -1)
+  local missing=()
+  while IFS= read -r pkg; do
+    echo "$installed" | grep -qx "$pkg" || missing+=("$pkg")
+  done <<< "$items"
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    echo "  Installing missing:"
+    printf "    %s\n" "${missing[@]}"
+    [[ "$kind" == cask ]] && brew install --cask "${missing[@]}" || brew install "${missing[@]}"
+  fi
 }
 
 dotsync() {
@@ -277,6 +323,11 @@ dotsync() {
     printf "  %s\n" "${missing_cargo[@]}"
     cargo install "${missing_cargo[@]}"
   fi
+
+  # --- Optional sections (prompt per machine, remembered in ~/.dotup-prefs) ---
+  _dotup_prompt_section brew-langs "Language toolchains (kotlin, gradle, etc.)" brew
+  _dotup_prompt_section cask-langs "Language SDKs (JDKs)" cask
+  _dotup_prompt_section brew-db    "Databases (mysql, postgres)" brew
 
   # --- Stow core packages ---
   local stowed=0
