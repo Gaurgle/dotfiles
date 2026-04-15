@@ -40,3 +40,7 @@ let g:NERDTreeMapJumpParent='h'
 "" Navigation between project explorer and editor
 nmap <C-h> :action ActivateProjectToolWindow<CR>
 nmap <C-l> :action FocusEditor<CR>
+
+"" Let IDE handle Page Up/Down for Navigate Back/Forward
+sethandler <PageUp> a:ide
+sethandler <PageDown> a:ide

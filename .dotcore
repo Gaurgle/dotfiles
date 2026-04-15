@@ -60,6 +60,7 @@ git
 lazygit
 nvim
 p10k
+scripts
 starship
 television
 tmux

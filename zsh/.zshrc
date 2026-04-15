@@ -110,13 +110,27 @@ eval "$(zoxide init zsh --hook pwd)"
 # Aliases
 alias gitconf="bat ~/.gitconfig --language ini"
 alias gitconfig="bat ~/.gitconfig --language ini"
-alias lz="eza --icons --group-directories-first --grid"
-alias lz.="eza --icons --group-directories-first --grid --all"
+lz() {
+  local count
+  count=$(eza --icons --group-directories-first "$@" 2>/dev/null | wc -l | tr -d ' ')
+  if (( count <= 8 )); then
+    eza --icons --group-directories-first --long "$@"
+  else
+    eza --icons --group-directories-first --grid "$@"
+  fi
+}
+alias lz.='lz --all'
 alias ls="eza --icons --group-directories-first"
 alias ll="eza --icons --group-directories-first --long"
 alias la="eza --icons --group-directories-first --long --all"
 alias tree="eza --icons --tree"
 alias cat="bat"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ..l='cd .. && eza -la'
+alias ...l='cd ../.. && eza -la'
 alias cpwd="pwd | pbcopy"
 fcount() {
   if [[ -z "$1" ]]; then
@@ -303,5 +317,3 @@ dotsync() {
 }
 eval "$(atuin init zsh)"
 export COLUMNS
-PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH

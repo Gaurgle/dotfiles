@@ -27,13 +27,29 @@ cd ~/.dotfiles
 brew bundle
 
 # Symlink all configs
-stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k starship television tmux yazi zed zellij zen-omp zsh
+stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k scripts starship television tmux yazi zed zellij zen-omp zsh
 
 # Install tmux plugins — open tmux, then prefix + I
 
 # Create notes directory
 mkdir -p ~/notes/0_quick-notes
+
+# SSH key setup (for GitHub, passwordless git fetch)
+# Add to macOS Keychain so passphrase is remembered across reboots
+ssh-add --apple-use-keychain ~/.ssh/id_rsa
 ```
+
+### SSH config
+
+Create `~/.ssh/config` (if it doesn't exist) so the keychain is used automatically:
+
+```
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+```
+
+Ensure repos use SSH remotes (`git@github.com:...`) rather than HTTPS to avoid credential prompts.
 
 ## Syncing across machines — `dotsync`
 
@@ -68,6 +84,7 @@ Edit `.dotcore` to adjust what's core for your setup.
 | Package | Config location |
 |---------|----------------|
 | aerospace | `~/.config/aerospace/aerospace.toml` |
+| scripts | `~/.local/bin/repos` |
 | bat | `~/.config/bat/` |
 | btop | `~/.config/btop/` |
 | gh | `~/.config/gh/` |
@@ -379,6 +396,7 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `notesearch <query>` | Search all notes with rg + fzf (bat preview); `notefind` is an alias |
 | `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
 | `dotsync` | Pull dotfiles, install missing core packages, stow core configs |
+| `repos` | Check GitHub repos for remote changes vs local state (see below) |
 
 **Tools:**
 - **Oh My Zsh** with git plugin
@@ -390,6 +408,45 @@ Based on Mac OS X 10.5+ with custom overrides.
 - **zsh-autosuggestions** and **zsh-syntax-highlighting**
 - **eza** as `ls`/`tree` replacement
 - **bat** as `cat` replacement
+
+## `repos` — cross-machine repo sync checker
+
+Compares your GitHub repos against local clones to see what's changed on another machine. Useful when working across multiple computers — run `repos` to see what you need to pull before starting work.
+
+One GitHub API call finds recently pushed repos, then targeted `git fetch` only on those. Repos under the current directory get full detail; repos found elsewhere on the machine are shown separately; repos not cloned anywhere are still listed so you know the full scope of a work session.
+
+```bash
+repos                    # find latest time slot with activity, check those repos
+repos --since 2026-03-25 # everything since a specific date
+repos --today            # everything since midnight
+repos --all              # show all divergence, no time filter
+repos -v                 # verbose output
+```
+
+Searches for repos under the current directory. Override with `REPO_CHECK_DIR`:
+
+```bash
+cd ~/repos && repos          # check all repos
+cd ~/repos/sigma && repos    # check only sigma repos
+REPO_CHECK_DIR=~/work repos  # explicit directory
+```
+
+**Time slots** — groups GitHub pushes into sessions:
+
+| Slot | Hours |
+|------|-------|
+| Work | 09:00 – 18:00 |
+| Evening | 18:00 – 00:00 |
+| Night | 00:00 – 09:00 |
+
+Default mode finds the most recent slot with any push activity and shows all repos from that slot. This surfaces what was worked on in your last session without checking every repo you own.
+
+**Output sections:**
+- **Main** — repos found under the current directory, with behind/ahead/synced status
+- **Also active (elsewhere)** — repos from the same session found in other locations, or not cloned at all
+- **Local changes** — repos under the current directory with uncommitted changes or unpushed commits (not part of the GitHub time slot — these are your in-progress work)
+
+**Requires:** `gh` (authenticated), `jq`, `git`
 
 ## How stow works
 
