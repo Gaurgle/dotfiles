@@ -51,33 +51,47 @@ Host *
 
 Ensure repos use SSH remotes (`git@github.com:...`) rather than HTTPS to avoid credential prompts.
 
-## Syncing across machines — `dotsync`
+## Syncing across machines — `dotup`, `dotsync`, `dotdrift`
 
-After initial setup, use `dotsync` to keep machines in sync. It reads `.dotcore` to know which packages are essential vs machine-dependent.
+After initial setup, three commands manage the cross-machine sync:
 
-```bash
-dotsync    # pull, install missing core packages, stow core configs
-```
+| Command | What it does |
+|---------|--------------|
+| `dotup` | Full sync: `dotsync && exec zsh` (also reloads the shell) |
+| `dotsync` | Pull repo, install missing packages from `.dotcore`, prompt for optional sections, stow core configs |
+| `dotdrift` | Diagnostic only — shows what's installed but not in `.dotcore` and vice versa. Run on each machine and `diff` outputs to compare across hosts |
 
-What it does:
-1. `git pull` latest dotfiles
-2. Installs missing core brew formulae, casks, and cargo packages
-3. Auto-stows core config packages
-4. Reports optional packages that aren't stowed
+### `.dotcore` structure
 
-### Core vs optional
+The manifest is sectioned, INI-ish. Inline `# comments` are stripped by the parser — keep them short.
 
-Defined in `.dotcore`. Core packages are always synced — optional ones (languages, databases, IDE-specific configs) are installed per-machine as needed.
+**Always installed (no prompt):**
 
-| Core (always synced) | Optional (machine-dependent) |
-|---------------------|------------------------------|
-| bat, btop, eza, fd, fzf, ripgrep, television | Languages: python, openjdk, node, zig, etc. |
-| neovim, lazygit, tmux, gh, git-delta | Databases: mysql, postgresql |
-| zoxide, thefuck, dust, glow, httpie | IDEs: jetbrains, ideavim, zed |
-| aerospace, ghostty, borders | Keyboard: karabiner |
-| Stow: zsh, git, nvim, tmux, bat, etc. | Stow: kitty, zellij, zen-omp, etc. |
+| Section | Purpose |
+|---------|---------|
+| `[brew]` | Core CLI tools |
+| `[tap]` + `[brew-tap]` | Third-party brew taps and the formulae from them |
+| `[cask]` | GUI apps and fonts |
+| `[cargo]` | Rust packages installed via `cargo install` |
+| `[stow]` | Subdirs to symlink into `$HOME` via GNU `stow` |
 
-Edit `.dotcore` to adjust what's core for your setup.
+**Optional (prompted per machine, choice remembered in `~/.dotup-prefs`):**
+
+| Section | Purpose |
+|---------|---------|
+| `[brew-langs]` | Heavy language toolchains (cmake, kotlin, gradle, maven, zig, …) |
+| `[cask-langs]` | Language SDKs (basictex, temurin@21) |
+| `[brew-db]` | Databases (mysql, postgresql, …) |
+
+The `~/.dotup-prefs` file is local-only (kept out of the repo). Format: `<hostname>:<section>=yes|no`. Delete a line to be re-prompted on next `dotup`.
+
+### Adding a tool
+
+1. Append it to the appropriate `.dotcore` section with a short inline comment
+2. Commit + push
+3. On the other machine: `dotup` picks it up automatically
+
+Removing a tool from `.dotcore` does **not** uninstall it — `dotsync` only adds, never removes.
 
 ## Stow packages
 
@@ -395,7 +409,9 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `notes` | Browse `~/notes` in yazi |
 | `notesearch <query>` | Search all notes with rg + fzf (bat preview); `notefind` is an alias |
 | `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
-| `dotsync` | Pull dotfiles, install missing core packages, stow core configs |
+| `dotup` | Full sync + shell reload (`dotsync && exec zsh`) |
+| `dotsync` | Pull dotfiles, install missing packages from `.dotcore`, prompt for optional sections, stow configs |
+| `dotdrift` | Show drift between installed packages and `.dotcore` (diagnostic only) |
 | `repos` | Check GitHub repos for remote changes vs local state (see below) |
 
 **Tools:**

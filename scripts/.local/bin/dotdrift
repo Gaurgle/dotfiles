@@ -1,0 +1,45 @@
+#!/bin/zsh
+# Compare what's installed on this machine vs ~/.dotfiles/.dotcore.
+# Run on each machine and diff the outputs to compare across hosts.
+
+set -u
+DOTCORE="$HOME/.dotfiles/.dotcore"
+
+section() {
+  awk -v sec="[$1]" '
+    $0 == sec { in_sec = 1; next }
+    /^\[/    { in_sec = 0 }
+    in_sec   { sub(/[ \t]*#.*$/, ""); if (NF) print }
+  ' "$DOTCORE"
+}
+
+echo "######## Drift report — host: $(hostname -s) — $(date +%F) ########"
+echo ""
+echo "=== Top-level brew formulae installed but NOT in .dotcore ==="
+comm -23 <(brew leaves | sort) \
+  <(cat <(section brew) <(section brew-langs) <(section brew-db) <(section brew-tap) | sort -u)
+echo ""
+echo "=== Casks installed but NOT in .dotcore ==="
+comm -23 <(brew list --cask -1 | sort) \
+  <(cat <(section cask) <(section cask-langs) | sort -u)
+echo ""
+echo "=== Cargo packages installed but NOT in .dotcore ==="
+comm -23 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{print $1}' | sort) \
+  <(section cargo | sort)
+echo ""
+echo "=== .dotcore items NOT installed here ==="
+echo "-- [brew] --"
+comm -13 <(brew list --formula -1 | sort) <(section brew | sort)
+echo "-- [cask] --"
+comm -13 <(brew list --cask -1 | sort) <(section cask | sort)
+echo "-- [brew-langs] (optional, prompted) --"
+comm -13 <(brew list --formula -1 | sort) <(section brew-langs | sort)
+echo "-- [cask-langs] (optional, prompted) --"
+comm -13 <(brew list --cask -1 | sort) <(section cask-langs | sort)
+echo "-- [brew-db] (optional, prompted) --"
+comm -13 <(brew list --formula -1 | sort) <(section brew-db | sort)
+echo "-- [cargo] --"
+comm -13 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{print $1}' | sort) <(section cargo | sort)
+echo ""
+echo "=== Dotup prefs on this machine ==="
+cat "$HOME/.dotup-prefs" 2>/dev/null || echo "  (none yet)"

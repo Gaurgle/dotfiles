@@ -113,14 +113,12 @@ television                          # television config
 tmux                                # tmux config
 yazi                                # yazi config
 zed                                 # Zed config
-zellij                              # zellij config
 zen-omp                             # oh-my-posh "zen" theme
 zsh                                 # .zshrc and friends
 
 # --- Optional sections (prompted per machine, remembered in ~/.dotup-prefs) ---
 
 [brew-langs]
-basictex                    # minimal LaTeX distribution
 cmake                       # cross-platform build system
 go                          # Go programming language
 gradle                      # JVM build tool (Kotlin/Java)
@@ -135,6 +133,7 @@ pandoc                      # document format converter
 zig                         # Zig programming language
 
 [cask-langs]
+basictex                    # minimal LaTeX distribution
 temurin@21                  # Eclipse OpenJDK 21 LTS
 
 [brew-db]
