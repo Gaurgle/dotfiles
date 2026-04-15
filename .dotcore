@@ -39,7 +39,6 @@ node@20                     # Node.js v20 LTS
 numpy                       # Python scientific computing
 oh-my-posh                  # prompt theme engine
 onefetch                    # git repo info display
-pass                        # CLI password manager (gpg)
 pipx                        # install Python CLIs in isolated venvs
 poppler                     # PDF rendering + utilities
 powerlevel10k               # zsh theme
