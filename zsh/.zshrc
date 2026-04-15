@@ -220,6 +220,8 @@ alias znote='noglob znote'
 PATH=$(pyenv root)/shims:$PATH
 
 # --- Dotfiles sync ---
+alias dotup='dotsync && exec zsh'
+
 _dotcore_section() {
   sed -n "/^\[$1\]/,/^\[/{/^\[/d;/^#/d;/^$/d;p}" ~/.dotfiles/.dotcore
 }
