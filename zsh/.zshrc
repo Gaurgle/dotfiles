@@ -214,9 +214,8 @@ bindkey '\e ' autosuggest-accept
 
 eval $(thefuck --alias)
 
-# --- notez noglob overrides (prevent zsh glob expansion on ? and *) ---
-alias zlog='noglob zlog'
-alias znote='noglob znote'
+# --- notez-cli shell integration (provided by the binary itself) ---
+eval "$(notez init zsh)"
 PATH=$(pyenv root)/shims:$PATH
 
 # --- Dotfiles sync ---
