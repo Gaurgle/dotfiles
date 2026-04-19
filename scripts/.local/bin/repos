@@ -118,13 +118,14 @@ if [ "$MODE" = "auto" ]; then
             elif $h >= $we            then {k: "2", l: $le}
             else                           {k: "3", l: $ln} end
           ) as $slot
-        | {name, slot_id: "\($date)_\($slot.k)",
-           slot_display: "\($date)  \($slot.l)"}
+        | {name, date: $date, slot_label: $slot.l}
       ]
-      | group_by(.slot_id)
-      | sort_by(.[0].slot_id)
+      | group_by(.date)
+      | sort_by(.[0].date)
       | last
-      | "\(.[0].slot_display)\n\([.[].name] | join("\n"))"
+      | (.[0].date) as $d
+      | ([.[].slot_label] | unique | join(", ")) as $slots
+      | "\($d)  \($slots)\n\([.[].name] | unique | join("\n"))"
     ') || true
 
     if [ -z "$result" ]; then
