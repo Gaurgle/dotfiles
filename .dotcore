@@ -46,6 +46,7 @@ procs                       # ps alt
 pyenv                       # Python version manager
 python@3.12                 # Python 3.12
 ripgrep                     # grep alt, very fast
+rtk                         # LLM token-saving CLI proxy (Claude Code hook)
 starship                    # cross-shell prompt
 stow                        # symlink manager (used by dotsync)
 stylua                      # Lua formatter

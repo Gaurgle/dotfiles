@@ -34,6 +34,10 @@ stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit
 # Create notes directory
 mkdir -p ~/notes/0_quick-notes
 
+# Wire rtk into Claude Code (compresses Bash tool output, ~80% token savings)
+# Adds @RTK.md to ~/.claude/CLAUDE.md and a PreToolUse hook to ~/.claude/settings.json
+rtk init -g
+
 # SSH key setup (for GitHub, passwordless git fetch)
 # Add to macOS Keychain so passphrase is remembered across reboots
 ssh-add --apple-use-keychain ~/.ssh/id_rsa
