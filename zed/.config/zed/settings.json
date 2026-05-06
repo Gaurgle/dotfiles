@@ -7,6 +7,35 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry"
+    },
+    "codex-acp": {
+      "type": "registry"
+    }
+  },
+  "vim": {
+    "use_system_clipboard": "always",
+    "toggle_relative_line_numbers": true
+  },
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "right"
+  },
+  "collaboration_panel": {
+    "dock": "right"
+  },
+  "agent": {
+    "dock": "left",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "right"
+  },
   "vim_mode": true,
   "relative_line_numbers": "enabled",
   "cursor_blink": false,
@@ -19,5 +48,5 @@
   "base_keymap": "JetBrains",
   "ui_font_size": 16,
   "buffer_font_size": 14.0,
-  "theme": "Zedokai (Filter Spectrum)",
+  "theme": "Zedokai Darker (Filter Spectrum)",
 }
