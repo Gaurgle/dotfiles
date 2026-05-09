@@ -17,6 +17,7 @@ entr                        # run commands on file change
 eza                         # ls alt with icons/colors
 fastfetch                   # system info display
 fd                          # find alt, simpler & faster
+frogmouth                   # TUI markdown browser
 fswatch                     # filesystem event watcher
 fzf                         # fuzzy finder
 gh                          # GitHub CLI
