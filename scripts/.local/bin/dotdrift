@@ -27,6 +27,10 @@ echo "=== Cargo packages installed but NOT in .dotcore ==="
 comm -23 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{print $1}' | sort) \
   <(section cargo | sort)
 echo ""
+echo "=== Pipx packages installed but NOT in .dotcore ==="
+comm -23 <(pipx list --short 2>/dev/null | awk '{print $1}' | sort) \
+  <(section pipx | sort)
+echo ""
 echo "=== .dotcore items NOT installed here ==="
 echo "-- [brew] --"
 comm -13 <(brew list --formula -1 | sort) <(section brew | sort)
@@ -40,6 +44,8 @@ echo "-- [brew-db] (optional, prompted) --"
 comm -13 <(brew list --formula -1 | sort) <(section brew-db | sort)
 echo "-- [cargo] --"
 comm -13 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{print $1}' | sort) <(section cargo | sort)
+echo "-- [pipx] --"
+comm -13 <(pipx list --short 2>/dev/null | awk '{print $1}' | sort) <(section pipx | sort)
 echo ""
 echo "=== Dotup prefs on this machine ==="
 cat "$HOME/.dotup-prefs" 2>/dev/null || echo "  (none yet)"

@@ -93,6 +93,9 @@ zed                                 # high-performance code editor
 presenterm                          # terminal slideshow tool
 tmuxcc                              # tmux config helper
 
+[pipx]
+frogmouth                           # TUI markdown browser
+
 [stow]
 aerospace                           # aerospace config
 bat                                 # bat config

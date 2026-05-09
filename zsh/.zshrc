@@ -323,6 +323,18 @@ dotsync() {
     cargo install "${missing_cargo[@]}"
   fi
 
+  # --- Pipx packages ---
+  local installed_pipx=$(pipx list --short 2>/dev/null | awk '{print $1}')
+  local missing_pipx=()
+  while IFS= read -r pkg; do
+    echo "$installed_pipx" | grep -qx "$pkg" || missing_pipx+=("$pkg")
+  done < <(_dotcore_section pipx)
+  if [[ ${#missing_pipx[@]} -gt 0 ]]; then
+    echo "\n==> Installing missing pipx packages:"
+    printf "  %s\n" "${missing_pipx[@]}"
+    for pkg in "${missing_pipx[@]}"; do pipx install "$pkg"; done
+  fi
+
   # --- Optional sections (prompt per machine, remembered in ~/.dotup-prefs) ---
   _dotup_prompt_section brew-langs "Language toolchains (kotlin, gradle, etc.)" brew
   _dotup_prompt_section cask-langs "Language SDKs (JDKs)" cask
