@@ -26,3 +26,6 @@ keybind = cmd+shift+8=move_tab:-1
 
 # Commands
 
+# Mouse
+mouse-hide-while-typing = true
+
