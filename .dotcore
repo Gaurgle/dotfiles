@@ -126,9 +126,10 @@ cmake                       # cross-platform build system
 go                          # Go programming language
 gradle                      # JVM build tool (Kotlin/Java)
 kotlin                      # Kotlin compiler
-kotlin-language-server      # LSP for Kotlin
-ktfmt                       # Kotlin formatter (Facebook, --kotlinlang-style)
-ktlint                      # Kotlin linter (formatter role handled by ktfmt)
+kotlin-language-server      # LSP for Kotlin (fwcd community; kept as fallback, disabled in nvim)
+kotlin-lsp                  # JetBrains' official Kotlin LSP (preferred, configured in nvim)
+ktfmt                       # Kotlin formatter, --kotlinlang-style (keeps trailing commas)
+ktlint                      # Kotlin linter, lint-only (1.8.0 --stdin --format crashes on '%' in source)
 llvm                        # LLVM compiler toolchain
 luarocks                    # Lua package manager
 maven                       # JVM build tool (Java)
