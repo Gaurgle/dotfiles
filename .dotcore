@@ -127,7 +127,8 @@ go                          # Go programming language
 gradle                      # JVM build tool (Kotlin/Java)
 kotlin                      # Kotlin compiler
 kotlin-language-server      # LSP for Kotlin
-ktlint                      # Kotlin linter / formatter
+ktfmt                       # Kotlin formatter (Facebook, --kotlinlang-style)
+ktlint                      # Kotlin linter (formatter role handled by ktfmt)
 llvm                        # LLVM compiler toolchain
 luarocks                    # Lua package manager
 maven                       # JVM build tool (Java)

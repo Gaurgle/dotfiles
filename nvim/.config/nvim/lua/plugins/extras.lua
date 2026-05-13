@@ -1,4 +1,7 @@
 return {
+  -- Language extras
+  { import = "lazyvim.plugins.extras.lang.kotlin" },
+
   {
     "catppuccin/nvim",
     name = "catppuccin",
@@ -23,6 +26,24 @@ return {
     opts = {
       linters_by_ft = {
         markdown = {},
+        kotlin = { "ktlint" },
+      },
+    },
+  },
+
+  -- Override LazyVim kotlin-extra default (ktlint formatter) with ktfmt.
+  -- --kotlinlang-style follows JetBrains coding conventions and adds
+  -- trailing commas, which keeps ktfmt and ktlint in agreement.
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        kotlin = { "ktfmt" },
+      },
+      formatters = {
+        ktfmt = {
+          prepend_args = { "--kotlinlang-style" },
+        },
       },
     },
   },
