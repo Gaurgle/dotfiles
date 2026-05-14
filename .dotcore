@@ -101,6 +101,7 @@ aerospace                           # aerospace config
 bat                                 # bat config
 btop                                # btop config
 claude                              # Claude Code config
+editorconfig                        # ~/.editorconfig (cross-editor indent rules)
 gh                                  # GitHub CLI config
 ghostty                             # ghostty config
 git                                 # git config

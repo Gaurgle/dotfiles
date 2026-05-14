@@ -1,0 +1,38 @@
+# Global editor defaults — read by Neovim (0.9+ native), Sublime Text
+# (via EditorConfig plugin), IntelliJ, VS Code, and most modern editors.
+# Project-local .editorconfig files override these.
+
+root = true
+
+[*]
+indent_style = space
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# 4-space languages (Kotlin, Python, Rust, Java, Swift, C, C# — official styles)
+[*.{kt,kts,py,rs,java,swift,c,h,cs}]
+indent_size = 4
+
+# 2-space languages (JS/TS, web, config, scripting — most community styles)
+[*.{js,ts,jsx,tsx,mjs,cjs,html,htm,css,scss,sass,less,vue,svelte,json,jsonc,yml,yaml,toml,lua,rb,sh,bash,zsh,fish,md}]
+indent_size = 2
+
+# Google C++ style: 2 spaces
+[*.{cc,cpp,cxx,hpp,hxx,h++}]
+indent_size = 2
+
+# Go REQUIRES tabs (gofmt enforces this)
+[*.go]
+indent_style = tab
+
+# Makefiles REQUIRE tabs (syntax requirement)
+[Makefile]
+indent_style = tab
+
+[makefile]
+indent_style = tab
+
+[*.mk]
+indent_style = tab
