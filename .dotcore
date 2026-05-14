@@ -136,6 +136,7 @@ luarocks                    # Lua package manager
 maven                       # JVM build tool (Java)
 ninja                       # small fast build system (pairs with cmake)
 pandoc                      # document format converter
+swiftlint                   # Swift linter (sourcekit-lsp ships with Xcode)
 zig                         # Zig programming language
 
 [cask-langs]

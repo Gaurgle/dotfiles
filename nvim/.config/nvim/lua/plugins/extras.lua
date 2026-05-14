@@ -27,6 +27,7 @@ return {
       linters_by_ft = {
         markdown = {},
         kotlin = { "ktlint" },
+        swift = { "swiftlint" },
       },
     },
   },
@@ -70,8 +71,18 @@ return {
         -- if the binary is missing, nvim-lspconfig will silently skip it.
         kotlin_language_server = { enabled = false },
         kotlin_lsp = {},
+        -- sourcekit-lsp ships with Xcode (/usr/bin/sourcekit-lsp) — not a
+        -- Mason package. Restricted to swift so it doesn't also attach to
+        -- C/C++ buffers, which the clangd extra already handles.
+        sourcekit = { filetypes = { "swift" } },
       },
     },
+  },
+
+  -- Swift syntax highlighting (no LazyVim lang.swift extra exists yet).
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { ensure_installed = { "swift" } },
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
