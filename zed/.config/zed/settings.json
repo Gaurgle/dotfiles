@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "cursor_shape": "block",
   "agent_servers": {
     "claude-acp": {
       "type": "registry"
@@ -17,7 +18,7 @@
   },
   "vim": {
     "use_system_clipboard": "always",
-    "toggle_relative_line_numbers": true
+    "toggle_relative_line_numbers": false
   },
   "project_panel": {
     "dock": "left"

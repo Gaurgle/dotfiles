@@ -81,6 +81,8 @@ run = 'layout tiling'
     alt-f = 'workspace f'   # Browser (Brave)
     alt-d = 'workspace d'   # Ghostty (terminal)
     alt-m = 'workspace m'   # Monitor (secondary)
+    alt-z = 'workspace z'   # Zed
+
 
     # Move window to workspace (add Shift)
     alt-shift-0 = 'move-node-to-workspace 0'
@@ -104,7 +106,7 @@ run = 'layout tiling'
     alt-tab = 'workspace-back-and-forth'
     alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
-    
+
 
     # Window management
     alt-w = 'close'
