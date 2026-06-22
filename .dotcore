@@ -100,7 +100,6 @@ frogmouth                           # TUI markdown browser
 aerospace                           # aerospace config
 bat                                 # bat config
 btop                                # btop config
-claude                              # Claude Code config
 editorconfig                        # ~/.editorconfig (cross-editor indent rules)
 gh                                  # GitHub CLI config
 ghostty                             # ghostty config
@@ -108,6 +107,7 @@ git                                 # git config
 ideavim                             # IdeaVim config
 jetbrains                           # JetBrains IDE configs
 karabiner                           # Karabiner profiles
+kitty                               # kitty terminal config
 lazygit                             # lazygit config
 nvim                                # Neovim config
 p10k                                # powerlevel10k config
@@ -117,6 +117,7 @@ television                          # television config
 tmux                                # tmux config
 yazi                                # yazi config
 zed                                 # Zed config
+zellij                              # zellij multiplexer config
 zen-omp                             # oh-my-posh "zen" theme
 zsh                                 # .zshrc and friends
 
