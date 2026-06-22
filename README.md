@@ -19,6 +19,13 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) an
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+# IMPORTANT: do NOT run Homebrew's "Next steps" command that appends
+# `eval "$(/opt/homebrew/bin/brew shellenv)"` to ~/.zprofile.
+# The zsh package below already does this, and a real ~/.zprofile will make
+# stow abort the entire symlink step (see note after the stow command).
+# Just activate brew for this shell session instead:
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Clone
 git clone https://github.com/Gaurgle/dotfiles ~/.dotfiles
 cd ~/.dotfiles
@@ -26,8 +33,15 @@ cd ~/.dotfiles
 # Install all packages
 brew bundle
 
+# Clear default shell files macOS/Homebrew may have created, or stow aborts.
+# stow refuses ALL packages if even one target already exists as a real file.
+# This backs them up rather than deleting them.
+for f in .zprofile .zshrc .zshenv; do [ -e ~/$f ] && mv ~/$f ~/$f.pre-stow.bak; done
+
 # Symlink all configs
-stow aerospace bat btop gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k scripts starship television tmux yazi zed zellij zen-omp zsh
+stow aerospace bat btop editorconfig gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k scripts starship television tmux yazi zed zellij zen-omp zsh
+# If stow reports a conflict ("All operations aborted"), nothing was linked.
+# Move the conflicting file (`mv ~/<file> ~/<file>.bak`) and re-run the command.
 
 # Install tmux plugins — open tmux, then prefix + I
 
