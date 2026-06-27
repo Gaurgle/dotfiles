@@ -359,7 +359,7 @@ dotsync() {
   _dotup_prompt_section brew-db    "Databases (mysql, postgres)" brew
 
   # --- Stow core packages ---
-  local stowed=0
+  local stowed=0 relinked=0
   while IFS= read -r pkg; do
     [[ -d "$pkg" ]] || continue
     local has_link=false
@@ -370,6 +370,15 @@ dotsync() {
     if ! $has_link; then
       echo "==> Stowing $pkg..."
       stow "$pkg" && ((stowed++))
+    else
+      # Partially linked (e.g. a sibling manually overridden like repos).
+      # stow would abort the whole package, so link only the missing files.
+      while IFS= read -r f; do
+        local target="$HOME/${f#$pkg/}"
+        [[ -e "$target" || -L "$target" ]] && continue
+        mkdir -p "$(dirname "$target")"
+        ln -s "$PWD/$f" "$target" && { echo "==> Linked missing ${f#$pkg/}"; ((relinked++)); }
+      done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
     fi
   done < <(_dotcore_section stow)
 
@@ -394,12 +403,13 @@ dotsync() {
   # silently logs out the gh CLI. Surface it instead of letting it be a mystery.
   local gh_hosts="$HOME/.config/gh/hosts.yml"
   if command -v gh >/dev/null 2>&1 && { [[ -L "$gh_hosts" && ! -e "$gh_hosts" ]] || [[ ! -e "$gh_hosts" ]]; }; then
-    echo "\n⚠  gh hosts.yml is missing or its symlink is broken — the gh CLI is logged out."
+    echo "\n⚠  gh hosts.yml is missing or its symlink is broken; the gh CLI is logged out."
     echo "   Fix: gh auth login -h github.com -p ssh -w   (choose 'Skip' at the upload-key step)"
   fi
 
   echo "\n==> Sync complete."
   [[ $stowed -gt 0 ]] && echo "  Stowed $stowed new core packages."
+  [[ $relinked -gt 0 ]] && echo "  Linked $relinked missing file(s) in partially-stowed packages."
   if [[ ${#optional[@]} -gt 0 ]]; then
     echo "  Optional packages not stowed:"
     printf "    %s\n" "${optional[@]}"
