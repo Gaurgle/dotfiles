@@ -10,7 +10,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) an
 ### Neovim
 ![Neovim](screenshots/nvim.png)
 
-### AeroSpace tiling — Neovim, Claude, yazi, tmux
+### AeroSpace tiling - Neovim, Claude, yazi, tmux
 ![AeroSpace tiling](screenshots/aerospace-tiling.png)
 
 ## Setup on a new Mac
@@ -43,7 +43,7 @@ stow aerospace bat btop editorconfig gh ghostty git ideavim jetbrains karabiner 
 # If stow reports a conflict ("All operations aborted"), nothing was linked.
 # Move the conflicting file (`mv ~/<file> ~/<file>.bak`) and re-run the command.
 
-# Install tmux plugins — open tmux, then prefix + I
+# Install tmux plugins - open tmux, then prefix + I
 
 # Create notes directory
 mkdir -p ~/notes/0_quick-notes
@@ -69,19 +69,22 @@ Host *
 
 Ensure repos use SSH remotes (`git@github.com:...`) rather than HTTPS to avoid credential prompts.
 
-## Syncing across machines — `dotup`, `dotsync`, `dotdrift`
+## Syncing across machines - `dotup`, `dotsync`, `dotdrift`
 
-After initial setup, three commands manage the cross-machine sync:
+After initial setup, these commands manage the cross-machine sync. Run `dothelp` any time for a quick reminder.
 
 | Command | What it does |
 |---------|--------------|
 | `dotup` | Full sync: `dotsync && exec zsh` (also reloads the shell) |
 | `dotsync` | Pull repo, install missing packages from `.dotcore`, prompt for optional sections, stow core configs |
-| `dotdrift` | Diagnostic only — shows what's installed but not in `.dotcore` and vice versa. Run on each machine and `diff` outputs to compare across hosts |
+| `dotdrift` | Diagnostic only - shows what's installed but not in `.dotcore` and vice versa. Run on each machine and `diff` outputs to compare across hosts |
+| `dothelp` | Print a short cheatsheet of these commands |
+
+`dotsync` ends with a **gh auth health check**: `hosts.yml` is gitignored and local-only, but its stow symlink points into the repo, so a pull can leave it dangling and silently log out the `gh` CLI. The check warns and prints the `gh auth login` fix instead of leaving it a mystery.
 
 ### `.dotcore` structure
 
-The manifest is sectioned, INI-ish. Inline `# comments` are stripped by the parser — keep them short.
+The manifest is sectioned, INI-ish. Inline `# comments` are stripped by the parser - keep them short.
 
 **Always installed (no prompt):**
 
@@ -109,7 +112,7 @@ The `~/.dotup-prefs` file is local-only (kept out of the repo). Format: `<hostna
 2. Commit + push
 3. On the other machine: `dotup` picks it up automatically
 
-Removing a tool from `.dotcore` does **not** uninstall it — `dotsync` only adds, never removes.
+Removing a tool from `.dotcore` does **not** uninstall it - `dotsync` only adds, never removes.
 
 ## Stow packages
 
@@ -144,7 +147,7 @@ The setup has three layers of window/pane management stacked on top of each othe
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  AeroSpace (opt)         — manages macOS windows    │
+│  AeroSpace (opt)         - manages macOS windows    │
 │  ┌───────────────────┐  ┌───────────────────┐       │
 │  │ Ghostty           │  │ Android Studio    │       │
 │  │ ┌───────────────┐ │  │                   │       │
@@ -158,7 +161,7 @@ The setup has three layers of window/pane management stacked on top of each othe
 └─────────────────────────────────────────────────────┘
 ```
 
-### Layer 1: AeroSpace — macOS windows (modifier: `opt`)
+### Layer 1: AeroSpace - macOS windows (modifier: `opt`)
 
 The outermost layer. Manages how macOS application windows are arranged on screen. Each workspace is a virtual desktop that can hold multiple app windows tiled side by side.
 
@@ -171,7 +174,7 @@ The outermost layer. Manages how macOS application windows are arranged on scree
 
 **Example:** `opt+d` to go to the terminal workspace, then `opt+l` to focus the Ghostty window next to Android Studio.
 
-### Layer 2: Ghostty — terminal tabs and splits (modifier: `cmd`)
+### Layer 2: Ghostty - terminal tabs and splits (modifier: `cmd`)
 
 Inside Ghostty, tabs and splits for running multiple terminal sessions without tmux.
 
@@ -181,7 +184,7 @@ Inside Ghostty, tabs and splits for running multiple terminal sessions without t
 | Split pane | `cmd+shift+d` |
 | Move tab | `cmd+shift+8/9` |
 
-### Layer 3: tmux — terminal panes and sessions (modifier: `C-a`)
+### Layer 3: tmux - terminal panes and sessions (modifier: `C-a`)
 
 Inside a Ghostty tab, tmux manages panes (splits within one terminal) and windows (tabs within tmux). Sessions persist across disconnects.
 
@@ -196,9 +199,9 @@ Inside a Ghostty tab, tmux manages panes (splits within one terminal) and window
 
 ### How they interact
 
-- **AeroSpace** doesn't know about tmux panes — it sees Ghostty as one window
+- **AeroSpace** doesn't know about tmux panes - it sees Ghostty as one window
 - **tmux** pane navigation (`C-h/j/k/l`) works seamlessly with nvim via vim-tmux-navigator
-- **Ghostty** splits are independent of tmux — use one or the other, not both
+- **Ghostty** splits are independent of tmux - use one or the other, not both
 - To move a terminal to another AeroSpace workspace: it's the whole Ghostty window that moves, including all tmux panes inside it
 
 ### Quick mental model
@@ -214,11 +217,11 @@ Inside a Ghostty tab, tmux manages panes (splits within one terminal) and window
 
 ## Modifier keys
 
-Each modifier has a dedicated role — no conflicts.
+Each modifier has a dedicated role - no conflicts.
 
 | Key | Role |
 |-----|------|
-| Caps Lock | Hyper key (Ctrl+Shift+Alt+Cmd) via Karabiner — tap for Escape |
+| Caps Lock | Hyper key (Ctrl+Shift+Alt+Cmd) via Karabiner - tap for Escape |
 | Ctrl | tmux prefix (`C-a`) |
 | Cmd | macOS standard shortcuts |
 | Option (Alt) | AeroSpace window manager |
@@ -227,7 +230,7 @@ Each modifier has a dedicated role — no conflicts.
 
 ### Karabiner
 
-- **Caps Lock** (hold) → Hyper key (Ctrl+Shift+Alt+Cmd) — app launching and global shortcuts via Raycast
+- **Caps Lock** (hold) → Hyper key (Ctrl+Shift+Alt+Cmd) - app launching and global shortcuts via Raycast
 - **Caps Lock** (tap) → Escape
 - External keyboard: grave/tilde and non-US backslash swapped (ANSI layout fix)
 
@@ -277,9 +280,9 @@ All bindings use **Option (Alt)** as the modifier. JankyBorders runs on startup 
 | `opt+d` | d | Ghostty (terminal) |
 | `opt+m` | m | Monitor (secondary) |
 | `opt+0-9` | 0-9 | General purpose |
-| `opt+shift+<key>` | — | Move window to that workspace |
-| `opt+tab` | — | Toggle previous workspace |
-| `opt+shift+tab` | — | Move workspace to next monitor |
+| `opt+shift+<key>` | - | Move window to that workspace |
+| `opt+tab` | - | Toggle previous workspace |
+| `opt+shift+tab` | - | Move workspace to next monitor |
 
 **Window management:**
 
@@ -308,7 +311,7 @@ Prefix: **Ctrl+a** (`C-b` also works)
 
 | Bind | Action |
 |------|--------|
-| `C-h/j/k/l` | Navigate panes (vim-tmux-navigator — seamless with nvim) |
+| `C-h/j/k/l` | Navigate panes (vim-tmux-navigator - seamless with nvim) |
 | `prefix+H/J/K/L` | Resize panes |
 | `prefix+I` | Install plugins via tpm |
 | `prefix+r` | Reload config |
@@ -392,7 +395,7 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `gitconf` / `gitconfig` | View `.gitconfig` with syntax highlighting |
 
 **Git config:**
-- **git-delta** as pager — side-by-side diffs, line numbers, Catppuccin Mocha syntax theme
+- **git-delta** as pager - side-by-side diffs, line numbers, Catppuccin Mocha syntax theme
 - `pull.rebase = true`
 - Git LFS enabled
 - GitHub credential helper via `gh auth`
@@ -423,7 +426,7 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `cpl <cmd>` | Run command and copy output to clipboard |
 | `fcount` | Count files and dirs in cwd; `fcount dir` for dirs only; `fcount ext` for files by extension |
 | `fsize` | Show size, file count, and type breakdown for a path; `fsize tree <dir>` to include tree view |
-| `note <title>` | Quick note — creates `~/notes/0_quick-notes/<date>-<title>.md` and opens in nvim |
+| `note <title>` | Quick note - creates `~/notes/0_quick-notes/<date>-<title>.md` and opens in nvim |
 | `notes` | Browse `~/notes` in yazi |
 | `notesearch <query>` | Search all notes with rg + fzf (bat preview); `notefind` is an alias |
 | `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
@@ -435,17 +438,17 @@ Based on Mac OS X 10.5+ with custom overrides.
 **Tools:**
 - **Oh My Zsh** with git plugin
 - **Powerlevel10k** prompt theme
-- **zoxide** with pwd hook — `z <fuzzy>` jumps to frequently used dirs, learns from `cd`
-- **television** (`tv`) — fuzzy finder initialized in shell
-- **thefuck** — auto-corrects previous console commands
-- **pyenv** — Python version management (shims on PATH)
+- **zoxide** with pwd hook - `z <fuzzy>` jumps to frequently used dirs, learns from `cd`
+- **television** (`tv`) - fuzzy finder initialized in shell
+- **thefuck** - auto-corrects previous console commands
+- **pyenv** - Python version management (shims on PATH)
 - **zsh-autosuggestions** and **zsh-syntax-highlighting**
 - **eza** as `ls`/`tree` replacement
 - **bat** as `cat` replacement
 
-## `repos` — cross-machine repo sync checker
+## `repos` - cross-machine repo sync checker
 
-Compares your GitHub repos against local clones to see what's changed on another machine. Useful when working across multiple computers — run `repos` to see what you need to pull before starting work.
+Compares your GitHub repos against local clones to see what's changed on another machine. Useful when working across multiple computers - run `repos` to see what you need to pull before starting work.
 
 One GitHub API call finds recently pushed repos, then targeted `git fetch` only on those. Repos under the current directory get full detail; repos found elsewhere on the machine are shown separately; repos not cloned anywhere are still listed so you know the full scope of a work session.
 
@@ -465,20 +468,20 @@ cd ~/repos/sigma && repos    # check only sigma repos
 REPO_CHECK_DIR=~/work repos  # explicit directory
 ```
 
-**Time slots** — groups GitHub pushes into sessions:
+**Time slots** - groups GitHub pushes into sessions:
 
 | Slot | Hours |
 |------|-------|
-| Work | 09:00 – 18:00 |
-| Evening | 18:00 – 00:00 |
-| Night | 00:00 – 09:00 |
+| Work | 09:00 - 18:00 |
+| Evening | 18:00 - 00:00 |
+| Night | 00:00 - 09:00 |
 
 Default mode finds the most recent slot with any push activity and shows all repos from that slot. This surfaces what was worked on in your last session without checking every repo you own.
 
 **Output sections:**
-- **Main** — repos found under the current directory, with behind/ahead/synced status
-- **Also active (elsewhere)** — repos from the same session found in other locations, or not cloned at all
-- **Local changes** — repos under the current directory with uncommitted changes or unpushed commits (not part of the GitHub time slot — these are your in-progress work)
+- **Main** - repos found under the current directory, with behind/ahead/synced status
+- **Also active (elsewhere)** - repos from the same session found in other locations, or not cloned at all
+- **Local changes** - repos under the current directory with uncommitted changes or unpushed commits (not part of the GitHub time slot - these are your in-progress work)
 
 **Requires:** `gh` (authenticated), `jq`, `git`
 

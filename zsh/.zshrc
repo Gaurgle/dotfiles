@@ -221,6 +221,24 @@ PATH=$(pyenv root)/shims:$PATH
 # --- Dotfiles sync ---
 alias dotup='dotsync && exec zsh'
 
+dothelp() {
+  cat <<'EOF'
+dotfiles - stow + brew configs synced across machines
+repo: ~/.dotfiles  ·  https://github.com/Gaurgle/dotfiles
+
+Everyday sync
+  dotup      Full sync, then reload the shell  (dotsync && exec zsh)
+  dotsync    Pull repo · install missing .dotcore packages · stow configs
+
+Diagnostics
+  dotdrift   List packages installed but not in .dotcore (and vice versa)
+  dothelp    Show this help
+
+Manifest: ~/.dotfiles/.dotcore  (sectioned, INI-ish).
+Add a tool there → commit → push → run `dotup` on the other machine.
+EOF
+}
+
 _dotcore_section() {
   # Print non-empty entries from a [section], stripping inline `# comments`.
   awk -v sec="[$1]" '
@@ -369,6 +387,16 @@ dotsync() {
     done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
     $has_link || optional+=("$pkg")
   done
+
+  # --- gh auth health check ---
+  # hosts.yml is gitignored and local-only, but our stow symlink points into the
+  # repo dir. A pull that touches that path can leave the symlink dangling, which
+  # silently logs out the gh CLI. Surface it instead of letting it be a mystery.
+  local gh_hosts="$HOME/.config/gh/hosts.yml"
+  if command -v gh >/dev/null 2>&1 && { [[ -L "$gh_hosts" && ! -e "$gh_hosts" ]] || [[ ! -e "$gh_hosts" ]]; }; then
+    echo "\n⚠  gh hosts.yml is missing or its symlink is broken — the gh CLI is logged out."
+    echo "   Fix: gh auth login -h github.com -p ssh -w   (choose 'Skip' at the upload-key step)"
+  fi
 
   echo "\n==> Sync complete."
   [[ $stowed -gt 0 ]] && echo "  Stowed $stowed new core packages."
