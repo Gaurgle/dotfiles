@@ -1,6 +1,10 @@
 return {
   -- Language extras
   { import = "lazyvim.plugins.extras.lang.kotlin" },
+  { import = "lazyvim.plugins.extras.lang.rust" },
+  { import = "lazyvim.plugins.extras.lang.clangd" },
+  { import = "lazyvim.plugins.extras.lang.java" },
+  { import = "lazyvim.plugins.extras.formatting.prettier" },
 
   {
     "catppuccin/nvim",
@@ -28,6 +32,7 @@ return {
         markdown = {},
         kotlin = { "ktlint" },
         swift = { "swiftlint" },
+        html = { "htmlhint" },
       },
     },
   },
@@ -52,11 +57,8 @@ return {
       )
 
       opts.formatters = opts.formatters or {}
-      opts.formatters.ktfmt = vim.tbl_extend(
-        "force",
-        opts.formatters.ktfmt or {},
-        { prepend_args = { "--kotlinlang-style" } }
-      )
+      opts.formatters.ktfmt =
+        vim.tbl_extend("force", opts.formatters.ktfmt or {}, { prepend_args = { "--kotlinlang-style" } })
 
       return opts
     end,
@@ -71,12 +73,18 @@ return {
         -- if the binary is missing, nvim-lspconfig will silently skip it.
         kotlin_language_server = { enabled = false },
         kotlin_lsp = {},
+        html = {},
         -- sourcekit-lsp ships with Xcode (/usr/bin/sourcekit-lsp) — not a
         -- Mason package. Restricted to swift so it doesn't also attach to
         -- C/C++ buffers, which the clangd extra already handles.
         sourcekit = { filetypes = { "swift" } },
       },
     },
+  },
+
+  {
+    "mason-org/mason.nvim",
+    opts = { ensure_installed = { "htmlhint" } },
   },
 
   -- Swift syntax highlighting (no LazyVim lang.swift extra exists yet).
