@@ -43,6 +43,7 @@ pipx                        # install Python CLIs in isolated venvs
 poppler                     # PDF rendering + utilities
 powerlevel10k               # zsh theme
 procs                       # ps alt
+proton-pass-cli             # Proton Pass CLI (personal creds)
 pyenv                       # Python version manager
 python@3.12                 # Python 3.12
 ripgrep                     # grep alt, very fast
@@ -95,6 +96,7 @@ tmuxcc                              # tmux config helper
 
 [pipx]
 frogmouth                           # TUI markdown browser
+keepercommander                     # Keeper vault CLI (IMRSV shared secrets)
 
 [stow]
 aerospace                           # aerospace config
