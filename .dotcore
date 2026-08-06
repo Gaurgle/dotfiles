@@ -103,6 +103,7 @@ aerospace                           # aerospace config
 bat                                 # bat config
 btop                                # btop config
 editorconfig                        # ~/.editorconfig (cross-editor indent rules)
+fleetz                              # fleetz repo dashboard config
 gh                                  # GitHub CLI config
 ghostty                             # ghostty config
 git                                 # git config

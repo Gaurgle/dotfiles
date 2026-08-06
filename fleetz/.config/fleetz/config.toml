@@ -1,0 +1,16 @@
+# fleetz config. Mirrors the repoz setup at ~/.config/repoz/config.
+# repo_dir defaults to ~/repos and work hours to 9-18, so only the extra
+# scan dir needs setting for parity.
+
+# Extra directories scanned for local repos alongside ~/repos, so repos
+# outside the main tree (or under a hidden path the walker skips) surface
+# under "local changes" when they have uncommitted or unpushed work.
+extra_dirs = ["~/.dotfiles"]
+# Blanket sweep: local git status plus a fetch from every remote. Generous
+# because it is now a backstop -- the GitHub poll notices a moved remote and
+# fetches just that repo, so freshness no longer depends on this.
+refresh_interval = 300
+view = "detail"
+work_start = 9
+work_end = 18
+persist_pane_sizes = false
