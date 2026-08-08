@@ -47,5 +47,61 @@ comm -13 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{pr
 echo "-- [pipx] --"
 comm -13 <(pipx list --short 2>/dev/null | awk '{print $1}' | sort) <(section pipx | sort)
 echo ""
+echo "=== Stow packages: files in the repo with no link here ==="
+# Package drift and link drift are separate failures. A config can be committed
+# and its tool installed, yet never linked on this machine, so every check above
+# reports clean while the tool refuses to start.
+DOTDIR="$HOME/.dotfiles"
+typeset -A link_dirs
+unlinked=0
+if cd "$DOTDIR" 2>/dev/null; then
+  link_dirs[$HOME]=1
+  while IFS= read -r pkg; do
+    [[ -d "$pkg" ]] || continue
+    while IFS= read -r f; do
+      target="$HOME/${f#$pkg/}"
+      if [[ ! -e "$target" && ! -L "$target" ]]; then
+        echo "  $pkg: ${f#$pkg/}"
+        unlinked=1
+      fi
+      # Record every ancestor dir so the link scan below also sees folded
+      # directory symlinks, not just per-file ones.
+      d="${target:h}"
+      while [[ "$d" == "$HOME"/* ]]; do
+        link_dirs[$d]=1
+        d="${d:h}"
+      done
+    done < <(find "$pkg" -type f 2>/dev/null)
+  done < <(section stow)
+  (( unlinked )) || echo "  (none)"
+
+  echo ""
+  echo "=== Stow links: dangling, or absolute so stow cannot adopt them ==="
+  # Stow makes relative links. An absolute one was made by hand or by dotsync's
+  # repair path, and stow aborts the whole package rather than touch it.
+  typeset -A reported
+  badlinks=0
+  for d in "${(@k)link_dirs}"; do
+    [[ -d "$d" ]] || continue
+    while IFS= read -r l; do
+      [[ -n "${reported[$l]:-}" ]] && continue
+      reported[$l]=1
+      tgt="$(readlink "$l")"
+      [[ "$tgt" == *"/.dotfiles/"* ]] || continue
+      if [[ ! -e "$l" ]]; then
+        echo "  DANGLING: ${l#$HOME/} -> $tgt"
+        badlinks=1
+      elif [[ "$tgt" == /* ]]; then
+        echo "  ABSOLUTE: ${l#$HOME/} -> $tgt"
+        badlinks=1
+      fi
+    done < <(find "$d" -maxdepth 1 -type l 2>/dev/null)
+  done
+  (( badlinks )) || echo "  (none)"
+else
+  echo "  (no ~/.dotfiles checkout)"
+fi
+
+echo ""
 echo "=== Dotup prefs on this machine ==="
 cat "$HOME/.dotup-prefs" 2>/dev/null || echo "  (none yet)"

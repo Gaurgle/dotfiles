@@ -77,10 +77,24 @@ After initial setup, these commands manage the cross-machine sync. Run `dothelp`
 |---------|--------------|
 | `dotup` | Full sync: `dotsync && exec zsh` (also reloads the shell) |
 | `dotsync` | Pull repo, install missing packages from `.dotcore`, prompt for optional sections, stow core configs |
-| `dotdrift` | Diagnostic only - shows what's installed but not in `.dotcore` and vice versa. Run on each machine and `diff` outputs to compare across hosts |
+| `dotdrift` | Diagnostic only - shows package drift (installed vs `.dotcore`) and link drift (repo files not linked, dangling links, links stow can't adopt). Run on each machine and `diff` outputs to compare across hosts |
 | `dothelp` | Print a short cheatsheet of these commands |
 
 `dotsync` ends with a **gh auth health check**: `hosts.yml` is gitignored and local-only, but its stow symlink points into the repo, so a pull can leave it dangling and silently log out the `gh` CLI. The check warns and prints the `gh auth login` fix instead of leaving it a mystery.
+
+### Link drift
+
+Package drift and link drift are separate failures. A config can be committed here and its tool installed by `dotsync`, yet never linked into `$HOME` on one machine - every package check reports clean while the tool refuses to start. `dotdrift` checks three things against the `[stow]` section:
+
+| Report | Meaning | Fix |
+|--------|---------|-----|
+| repo file with no link here | committed but never linked on this machine | `dotsync` |
+| `DANGLING` | link points at a repo path that no longer exists, usually after a `git mv` | `rm` the link, then `stow <pkg>` |
+| `ABSOLUTE` | link was made by hand or by `dotsync`'s repair path, so stow won't adopt it and aborts the whole package | `rm` the link, then `stow <pkg>` |
+
+`ABSOLUTE` is not broken - the config resolves and the tool works. It means `stow <pkg>` will refuse to manage that package until the link is recreated relative.
+
+**Why this check exists.** `dotsync` stows a package wholesale only when it has no links yet; otherwise it repairs file by file. That repair loop used to run `find -maxdepth 3`, so anything deeper was invisible. When the yazi git plugin landed at depth 5, `init.lua` (depth 3) was linked and `plugins/` was not, leaving yazi unable to start on a machine where the package was already stowed. Nothing reported it, because yazi itself was installed correctly.
 
 ### `.dotcore` structure
 
@@ -432,7 +446,7 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `log <message>` | Append timestamped line to today's daily log in `~/notes/0_quick-notes/` |
 | `dotup` | Full sync + shell reload (`dotsync && exec zsh`) |
 | `dotsync` | Pull dotfiles, install missing packages from `.dotcore`, prompt for optional sections, stow configs |
-| `dotdrift` | Show drift between installed packages and `.dotcore` (diagnostic only) |
+| `dotdrift` | Show package drift vs `.dotcore` and stow link drift (diagnostic only) |
 | `repos` | Check GitHub repos for remote changes vs local state (see below) |
 
 **Tools:**

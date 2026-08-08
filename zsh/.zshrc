@@ -231,7 +231,7 @@ Everyday sync
   dotsync    Pull repo · install missing .dotcore packages · stow configs
 
 Diagnostics
-  dotdrift   List packages installed but not in .dotcore (and vice versa)
+  dotdrift   Package drift vs .dotcore, plus unlinked/dangling stow links
   dothelp    Show this help
 
 Manifest: ~/.dotfiles/.dotcore  (sectioned, INI-ish).

@@ -3,3 +3,4 @@ zed/.config/zed/prompts/prompts-library-db.0.mdb/lock.mdb
 
 # gh stores its OAuth token here under HTTPS auth — never commit
 gh/.config/gh/hosts.yml
+.notez
