@@ -366,7 +366,7 @@ dotsync() {
     while IFS= read -r f; do
       local target="$HOME/${f#$pkg/}"
       [[ -L "$target" ]] && { has_link=true; break; }
-    done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
+    done < <(find "$pkg" -type f 2>/dev/null)
     if ! $has_link; then
       echo "==> Stowing $pkg..."
       stow "$pkg" && ((stowed++))
@@ -378,7 +378,7 @@ dotsync() {
         [[ -e "$target" || -L "$target" ]] && continue
         mkdir -p "$(dirname "$target")"
         ln -s "$PWD/$f" "$target" && { echo "==> Linked missing ${f#$pkg/}"; ((relinked++)); }
-      done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
+      done < <(find "$pkg" -type f 2>/dev/null)
     fi
   done < <(_dotcore_section stow)
 
@@ -393,7 +393,7 @@ dotsync() {
     while IFS= read -r f; do
       local target="$HOME/${f#$pkg/}"
       [[ -L "$target" ]] && { has_link=true; break; }
-    done < <(find "$pkg" -maxdepth 3 -type f 2>/dev/null)
+    done < <(find "$pkg" -type f 2>/dev/null)
     $has_link || optional+=("$pkg")
   done
 
