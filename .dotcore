@@ -44,7 +44,7 @@ poppler                     # PDF rendering + utilities
 powerlevel10k               # zsh theme
 procs                       # ps alt
 proton-pass-cli             # Proton Pass CLI (personal creds)
-pyenv                       # Python version manager
+pyenv                       # Python version manager (global 3.13.13)
 python@3.12                 # Python 3.12
 ripgrep                     # grep alt, very fast
 rtk                         # LLM token-saving CLI proxy (Claude Code hook)
