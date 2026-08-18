@@ -1,3 +1,13 @@
+# Keep PATH free of duplicates. zsh ties the `path` array to `PATH`, and -U
+# makes it drop any entry already present. This has to come before the first
+# assignment below to cover everything after it.
+#
+# It also defuses the failure mode that put five copies of the pyenv shim
+# line in this file: ~/.zshrc is a stow symlink into the dotfiles repo, so
+# any installer appending to it writes here, and a repeated entry now costs
+# nothing rather than accumulating.
+typeset -U path PATH
+
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
