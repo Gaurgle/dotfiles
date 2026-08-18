@@ -216,6 +216,12 @@ eval $(thefuck --alias)
 
 # --- notez-cli shell integration (provided by the binary itself) ---
 eval "$(notez init zsh)"
+
+# --- pyenv ---
+# Shims must precede the Homebrew python on PATH. Keep this the ONLY place
+# they are added: `pyenv init` and various installers append this same line
+# to ~/.zshrc, which is a stow symlink into this repo, so every stray lands
+# here as a repo change. Five copies had accumulated before this comment.
 PATH=$(pyenv root)/shims:$PATH
 
 # --- Dotfiles sync ---
@@ -419,6 +425,3 @@ dotsync() {
 }
 eval "$(atuin init zsh)"
 export COLUMNS
-PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH
