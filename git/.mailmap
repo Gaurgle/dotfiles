@@ -1,0 +1,9 @@
+# Collapse the several spellings of one person into one name.
+# git log/shortlog/blame and anything using %aN read this; GitHub's web UI
+# does not. Machine-local: wired up with `git config --global mailmap.file`.
+
+# Local commits are authored as "Gaurgle"; GitHub stamps web merge commits
+# with the profile name. Display both as the profile name.
+Andreas Roos <justwannagroove@gmail.com>
+Andreas Roos <larsnilsandreas@pm.me>
+Andreas Roos <156186841+Gaurgle@users.noreply.github.com>

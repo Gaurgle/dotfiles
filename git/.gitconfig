@@ -40,3 +40,5 @@
 	helper = !/opt/homebrew/bin/gh auth git-credential
 [fetch]
 	prune = true
+[mailmap]
+	file = ~/.mailmap
