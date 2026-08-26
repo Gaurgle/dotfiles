@@ -1,5 +1,5 @@
 [user]
-	name = Gaurgle
+	name = Andreas Roos
 	email = justwannagroove@gmail.com
 [filter "lfs"]
 	clean = git-lfs clean -- %f
