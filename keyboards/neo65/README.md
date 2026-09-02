@@ -11,9 +11,10 @@ Not yet obtained. Get it from the vendor before the board arrives and commit it
 here. Expect the same V2 format as the Neo75, and expect VIA's remote database
 not to have it.
 
-Confirm the physical layout when ordering or on arrival. The Neo75 is ISO
-Nordic; if the Neo65 differs, the VIA Layouts options and the keycap legends
-diverge from the Neo75 and the shared keymap needs re-checking key by key.
+ANSI, same as the Neo75, so the VIA Layouts options and the keycap legends
+carry over and the shared keymap transfers position for position. Verify on
+arrival anyway; if the board turns out to differ, the shared keymap needs
+re-checking key by key.
 
 ## Base layer, board-specific
 
@@ -77,6 +78,5 @@ Do not finalise these until the actual PCB layout is visible in VIA.
 
 ## Open questions
 
-- Physical layout, ISO Nordic or otherwise.
 - Whether layer 2 is the Windows base layer, same question as the Neo75.
 - Final navigation-column order.

@@ -8,7 +8,7 @@ this board holds in common with the Neo65, and for the Karabiner rules.
 ## Hardware
 
 - QwertyKeys Neo75 CU, copper weight
-- **ISO Nordic** physical layout
+- **ANSI** physical layout
 - Power 2048 keycaps
 - Tri-mode: USB, Bluetooth, 2.4 GHz
 
@@ -37,7 +37,7 @@ board will not correspond to what is under your fingers:
 | Option | Setting for this board |
 | --- | --- |
 | Split Backspace | match the build |
-| ISO Enter | **on**, this is an ISO Nordic board |
+| ISO Enter | **off**, this is an ANSI board |
 | Split Left Shift | match the build |
 | Bottom Row | 6.25U or 7U, match the spacebar |
 

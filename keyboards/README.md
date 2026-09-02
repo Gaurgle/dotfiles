@@ -11,10 +11,10 @@ links here.
 
 | Board | Layout | Directory | VIA definition |
 | --- | --- | --- | --- |
-| QwertyKeys Neo75 CU | ISO Nordic | `neo75/` | `neo75-via-definition.json`, V2 |
-| QwertyKeys Neo65 CU | to confirm on arrival | `neo65/` | not yet obtained |
+| QwertyKeys Neo75 CU | ANSI | `neo75/` | `neo75-via-definition.json`, V2 |
+| QwertyKeys Neo65 CU | ANSI | `neo65/` | not yet obtained |
 | Weikav Stars21 numpad | 21-key numpad | `stars21/` | `s21-via-definition.json`, V3 |
-| Keychron (older, not in daily use) | ANSI | not documented | n/a |
+| Keychron (older, not in daily use) | unconfirmed | not documented | n/a |
 
 All three are VIA boards, and none of them is in VIA's remote definition
 database. Every one needs its JSON sideloaded through the Design tab. Keep the
@@ -140,13 +140,14 @@ base-layer behaviour passes through.
 
 Three things can disagree, and all three have bitten before:
 
-1. **The physical layout.** The Neo75 CU is ISO Nordic, so it has an ISO Enter,
-   an extra key left of `Z`, and a narrower left Shift than an ANSI board. VIA's
-   Layouts section has to be set to match the physical build or the rendered
-   board is wrong and you will edit the wrong key.
+1. **The physical layout.** Both Neo boards are ANSI: one-row Enter, full-width
+   left Shift, no extra key left of `Z`. The Neo75 definition still offers ISO
+   Enter and split-shift options, so VIA's Layouts section has to be set to the
+   ANSI build or the rendered board is wrong and you will edit the wrong key.
 2. **The keycap legend.** The Power 2048 set is legended for a US/ANSI mental
-   model. On the ISO Nordic board the printed legend and the sent character part
-   ways on the keys around Enter, left Shift, and the top left.
+   model, which matches the boards, so caps and keycodes agree by default. They
+   part ways wherever a key has been remapped in VIA, most of all on the bottom
+   row and the former `RCtrl` position, now `MO(1)`.
 3. **The macOS input source.** `KC_GRV` produces backtick and tilde only under
    **ABC**, which is the current selection. **Swedish - Pro** is also enabled on
    this Mac, and under it the same physical key produces `§`, with backtick and
