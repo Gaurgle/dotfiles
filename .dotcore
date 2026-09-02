@@ -60,6 +60,7 @@ tokei                       # code stats by language
 tpm                         # tmux plugin manager
 trippy                      # traceroute TUI
 yazi                        # terminal file manager
+zellij                      # terminal multiplexer (config is in [stow])
 zoxide                      # smarter cd (`z`)
 zsh-autosuggestions         # fish-like autosuggestions
 zsh-syntax-highlighting     # syntax highlighting for zsh
@@ -68,6 +69,7 @@ zsh-syntax-highlighting     # syntax highlighting for zsh
 felixkratz/formulae         # for borders / jankyborders
 anomalyco/tap               # for opencode
 fsouza/prettierd            # for prettierd
+surge-downloader/tap        # for surge
 
 [brew-tap]
 felixkratz/formulae/borders         # window borders (aerospace companion)
@@ -86,8 +88,10 @@ font-jetbrains-mono-nerd-font       # JetBrains Mono w/ nerd icons
 font-meslo-lg-nerd-font             # Meslo LG w/ nerd icons (p10k recommended)
 ghostty                             # GPU-accelerated terminal
 karabiner-elements                  # keyboard remapper
+kitty                               # terminal (config is in [stow])
 raycast                             # launcher / spotlight replacement
 sublime-merge                       # git GUI client
+surge-downloader/tap/surge          # Surge audio plugin downloader
 zed                                 # high-performance code editor
 
 [cargo]
