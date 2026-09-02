@@ -1,6 +1,12 @@
 # dotfiles
 
-Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) and [Homebrew Bundle](https://github.com/Homebrew/homebrew-bundle).
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) and a package manifest, [`.dotcore`](.dotcore), driven by `dotsync`.
+
+> **Do not run `brew bundle`.** The `Brewfile` in this repo is a legacy
+> `brew bundle dump` snapshot that `.dotcore` replaced. It has no notion of the
+> optional sections, so it installs `mysql`, `postgresql@14`, `wireshark`,
+> `visual-studio-code`, `temurin@11` and a set of VS Code extensions on any
+> machine that runs it. Use `dotsync` (see [Setup](#setup-on-a-new-mac)).
 
 ## Screenshots
 
@@ -30,18 +36,34 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 git clone https://github.com/Gaurgle/dotfiles ~/.dotfiles
 cd ~/.dotfiles
 
-# Install all packages
-brew bundle
+# oh-my-zsh. .zshrc sources it and it is not a brew package, so no section of
+# .dotcore can carry it. --keep-zshrc stops the installer replacing ~/.zshrc.
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended --keep-zshrc
 
-# Clear default shell files macOS/Homebrew may have created, or stow aborts.
-# stow refuses ALL packages if even one target already exists as a real file.
-# This backs them up rather than deleting them.
+# The one package dotsync needs before it can run.
+brew install stow
+
+# Clear default shell files macOS/Homebrew and the oh-my-zsh installer create,
+# or stow aborts. stow refuses ALL packages if even one target already exists
+# as a real file. This backs them up rather than deleting them.
 for f in .zprofile .zshrc .zshenv; do [ -e ~/$f ] && mv ~/$f ~/$f.pre-stow.bak; done
 
-# Symlink all configs
-stow aerospace bat btop editorconfig gh ghostty git ideavim jetbrains karabiner kitty lazygit nvim p10k scripts starship television tmux yazi zed zellij zen-omp zsh
-# If stow reports a conflict ("All operations aborted"), nothing was linked.
-# Move the conflicting file (`mv ~/<file> ~/<file>.bak`) and re-run the command.
+# Link the zsh package first, on its own. That is what defines `dotsync`.
+stow zsh
+# If stow reports a conflict ("All operations aborted"), NOTHING was linked and
+# dotsync will not exist. Verify before continuing - this must print a symlink
+# pointing into ~/.dotfiles/zsh/:
+ls -l ~/.zshrc
+exec zsh
+
+# Install every package in .dotcore and stow the remaining packages.
+# dotsync prompts once per optional section and remembers the answers in
+# ~/.dotup-prefs. Answer `n` to all three on a machine that only needs the
+# terminal environment:
+#   Language toolchains (kotlin, gradle, etc.)
+#   Language SDKs (JDKs)
+#   Databases (mysql, postgres)
+dotsync
 
 # Install tmux plugins - open tmux, then prefix + I
 
