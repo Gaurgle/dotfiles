@@ -85,7 +85,7 @@ ZSH_THEME="robbyrussell"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
+[[ -r $ZSH/oh-my-zsh.sh ]] && source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -115,7 +115,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-eval "$(zoxide init zsh --hook pwd)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh --hook pwd)"
 
 # Aliases
 alias gitconf="bat ~/.gitconfig --language ini"
@@ -203,7 +203,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # television (fuzzy finder)
-eval "$(tv init zsh)"
+command -v tv >/dev/null && eval "$(tv init zsh)"
 # Detect Homebrew prefix (portable across Intel/Apple Silicon)
 if [[ -x /opt/homebrew/bin/brew ]]; then
   BREW_PREFIX=/opt/homebrew
@@ -212,27 +212,30 @@ else
 fi
 
 # Prompt: Powerlevel10k
-source $BREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
+[[ -r $BREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme ]] && \
+  source $BREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Alternative: Oh My Posh (uncomment to switch back)
 # eval "$(oh-my-posh init zsh --config ~/.config/zen-omp.toml)"
-source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ -r $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+  source $BREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -r $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+  source $BREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 bindkey '\e ' autosuggest-accept
 
-eval $(thefuck --alias)
+command -v thefuck >/dev/null && eval $(thefuck --alias)
 
 # --- notez-cli shell integration (provided by the binary itself) ---
-eval "$(notez init zsh)"
+command -v notez >/dev/null && eval "$(notez init zsh)"
 
 # --- pyenv ---
 # Shims must precede the Homebrew python on PATH. Keep this the ONLY place
 # they are added: `pyenv init` and various installers append this same line
 # to ~/.zshrc, which is a stow symlink into this repo, so every stray lands
 # here as a repo change. Five copies had accumulated before this comment.
-PATH=$(pyenv root)/shims:$PATH
+command -v pyenv >/dev/null && PATH=$(pyenv root)/shims:$PATH
 
 # --- Dotfiles sync ---
 alias dotup='dotsync && exec zsh'
@@ -296,7 +299,9 @@ _dotup_prompt_section() {
   [[ "$kind" == cask ]] && installed=$(brew list --cask -1) || installed=$(brew list --formula -1)
   local missing=()
   while IFS= read -r pkg; do
-    echo "$installed" | grep -qx "$pkg" || missing+=("$pkg")
+    # `brew list` prints short names, so a tapped entry (user/tap/pkg) is
+    # matched on its tail but still installed by its full name.
+    echo "$installed" | grep -qx "${pkg:t}" || missing+=("$pkg")
   done <<< "$items"
   if [[ ${#missing[@]} -gt 0 ]]; then
     echo "  Installing missing:"
@@ -326,7 +331,7 @@ dotsync() {
   local installed_formulae=$(brew list --formula -1)
   local missing_brew=()
   while IFS= read -r pkg; do
-    echo "$installed_formulae" | grep -qx "$pkg" || missing_brew+=("$pkg")
+    echo "$installed_formulae" | grep -qx "${pkg:t}" || missing_brew+=("$pkg")
   done < <(_dotcore_section brew; _dotcore_section brew-tap)
   if [[ ${#missing_brew[@]} -gt 0 ]]; then
     echo "\n==> Installing missing core formulae:"
@@ -338,7 +343,7 @@ dotsync() {
   local installed_casks=$(brew list --cask -1)
   local missing_casks=()
   while IFS= read -r pkg; do
-    echo "$installed_casks" | grep -qx "$pkg" || missing_casks+=("$pkg")
+    echo "$installed_casks" | grep -qx "${pkg:t}" || missing_casks+=("$pkg")
   done < <(_dotcore_section cask)
   if [[ ${#missing_casks[@]} -gt 0 ]]; then
     echo "\n==> Installing missing core casks:"
@@ -433,7 +438,5 @@ dotsync() {
 
   cd "$startdir"
 }
-eval "$(atuin init zsh)"
+command -v atuin >/dev/null && eval "$(atuin init zsh)"
 export COLUMNS
-PATH=$(pyenv root)/shims:$PATH
-PATH=$(pyenv root)/shims:$PATH
