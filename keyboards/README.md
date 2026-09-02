@@ -32,7 +32,9 @@ layouts overlap. The Neo75 may retain convenient dedicated keys, but no
 essential function should exist only there.
 
 The Stars21 is not part of that contract. It is a right-hand-alone device and
-its keymap serves numeric entry, not the main board.
+its keymap serves numeric entry, not the main board. **No essential function may
+depend on the numpad being connected**, for the same reason nothing essential
+may live only on the Neo75.
 
 **Layers do not cross devices.** Each keyboard is its own USB HID device with
 its own firmware and its own layer state. Holding `MO(1)` on the numpad changes
@@ -70,6 +72,13 @@ This is provided by Karabiner-Elements, not by the keyboard, so it works on the
 configured Mac and not automatically on every device. `MO(1)` + backtick is the
 keyboard-side Escape fallback, and it survives recovery mode, a fresh macOS
 install, or any machine without Karabiner.
+
+**Where the two boards differ.** The Neo75 keeps its physical Escape key, so
+its top-left number-row key is an ordinary backtick. The Neo65 has no dedicated
+Escape, so its top-left key is remapped from Escape to `KC_GRV` to keep backtick
+and tilde directly accessible, and Escape comes from Caps Lock tap with
+`MO(1)` + backtick as the fallback. Same legend, same position, different
+factory keycode.
 
 Tap-Escape fires on key release rather than key press, and will not repeat when
 held. Karabiner's default alone-timeout is 1000 ms, so a Caps Lock press held

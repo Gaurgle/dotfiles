@@ -56,7 +56,8 @@ plus the layer key.
 | 3 | `Tab` | Next field in spreadsheets and web forms |
 | 4 | `MO(1)` | Hold for Layer 1 |
 
-The rest of layer 0 stays factory. Num Lock is not a real toggle on macOS
+The rest of layer 0 stays factory, and the ordinary arithmetic keys stay
+intact: that is what the board is for. Num Lock is not a real toggle on macOS
 (`KC_NUM` sends Clear) and the digit keys send digits regardless, so that
 position is free to repurpose.
 

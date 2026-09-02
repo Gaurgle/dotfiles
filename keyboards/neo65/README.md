@@ -8,7 +8,8 @@ board must implement, and `../neo75/README.md` for the board it mirrors.
 ## VIA definition
 
 Not yet obtained. Get it from the vendor before the board arrives and commit it
-here. Expect the same V2 format as the Neo75, and expect VIA's remote database
+here. Tri-mode configuration needs the board connected by USB with the correct
+tri-mode JSON loaded; the wrong variant renders a board that does not match. Expect the same V2 format as the Neo75, and expect VIA's remote database
 not to have it.
 
 ANSI, same as the Neo75, so the VIA Layouts options and the keycap legends
