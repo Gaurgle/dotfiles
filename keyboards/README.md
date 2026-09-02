@@ -1,14 +1,45 @@
-# Neo75 Cu and Neo65 Cu - shared keymap
+# Keyboards
 
-Last updated: 2026-08-19
+Last updated: 2026-09-02
+
+Single source of truth for the physical keyboards, their VIA definitions and
+keymaps, and the Karabiner rules that sit on top of them. Nothing about
+keyboard hardware or keymaps should live in the repo root README; that file
+links here.
+
+## The boards
+
+| Board | Layout | Directory | VIA definition |
+| --- | --- | --- | --- |
+| QwertyKeys Neo75 CU | ISO Nordic | `neo75/` | `neo75-via-definition.json`, V2 |
+| QwertyKeys Neo65 CU | to confirm on arrival | `neo65/` | not yet obtained |
+| Weikav Stars21 numpad | 21-key numpad | `stars21/` | `s21-via-definition.json`, V3 |
+| Keychron (older, not in daily use) | ANSI | not documented | n/a |
+
+All three are VIA boards, and none of them is in VIA's remote definition
+database. Every one needs its JSON sideloaded through the Design tab. Keep the
+JSONs in this repo; vendor download links rot.
+
+**V2 versus V3 matters.** The Neo75 definition is a V2 file, so VIA needs
+Settings, "Use V2 definitions" turned on to load it. The Stars21 definition is
+V3 and needs that toggle off. If you configure both in one browser you will be
+flipping it. Each board's own README records which format it is.
 
 ## Design principle
 
-The Neo75 Cu and Neo65 Cu should use the same spatial logic wherever their
-physical layouts overlap. The Neo75 may retain convenient dedicated keys, but no
+The Neo75 and Neo65 should use the same spatial logic wherever their physical
+layouts overlap. The Neo75 may retain convenient dedicated keys, but no
 essential function should exist only there.
 
-## Shared base layer
+The Stars21 is not part of that contract. It is a right-hand-alone device and
+its keymap serves numeric entry, not the main board.
+
+**Layers do not cross devices.** Each keyboard is its own USB HID device with
+its own firmware and its own layer state. Holding `MO(1)` on the numpad changes
+what the numpad's keys send and nothing else. Anything that needs to work "on
+the other board" has to exist on that board, or go through Karabiner.
+
+## Shared base layer, Neo75 and Neo65
 
 ### Bottom row
 
@@ -45,19 +76,7 @@ held. Karabiner's default alone-timeout is 1000 ms, so a Caps Lock press held
 longer than one second and released without another key produces nothing. This
 is not noticeable at normal typing speed.
 
-On the Neo75, the physical Escape key remains available. On the Neo65, the
-top-left key is remapped from Escape to `KC_GRV` so backtick and tilde remain
-directly accessible.
-
-### Input-source caveat
-
-`KC_GRV` produces backtick and tilde only under the **ABC** input source, which
-is the current selection. **Swedish - Pro** is also enabled on this Mac, and
-under it the same physical key produces `§`, with backtick and tilde living on
-the dead keys near `´` and `¨`. If the top-left key suddenly stops producing
-backtick, check the input source before suspecting the firmware.
-
-## Shared Layer 1
+## Shared Layer 1, Neo75 and Neo65
 
 ### Escape
 
@@ -72,6 +91,10 @@ backtick, check the input source before suspecting the firmware.
 | `MO(1)` + `1` … `0` | F1 … F10 |
 | `MO(1)` + `-` | F11 |
 | `MO(1)` + `=` | F12 |
+
+The Stars21 carries its own F1 to F12 block on its layer 1, so the F row is
+reachable from the numpad regardless of which main board is connected. See
+`stars21/README.md`.
 
 ### Connection control
 
@@ -113,128 +136,52 @@ bindings are fine, since `MO(1)` sits directly beside the arrow cluster.
 Unused Layer 1 positions should normally be `KC_TRNS`, not `KC_NO`, so their
 base-layer behaviour passes through.
 
-## Neo75-specific keys
+## Legends versus what the key actually sends
 
-| Position | Mapping | Status |
-| --- | --- | --- |
-| Former `RCtrl`, immediately left of Left Arrow | `MO(1)` | Confirmed |
-| Top-right extra key, F13 position | `MO(1)` | Confirmed; redundant backup for now |
-| Dedicated F-row | F1-F12 | Retained |
-| Dedicated Escape | Escape | Retained |
+Three things can disagree, and all three have bitten before:
 
-The top-right `MO(1)` can later become Mute or a programmable F13 utility key.
-Do not assign an essential function there because the Neo65 has no matching
-physical key.
+1. **The physical layout.** The Neo75 CU is ISO Nordic, so it has an ISO Enter,
+   an extra key left of `Z`, and a narrower left Shift than an ANSI board. VIA's
+   Layouts section has to be set to match the physical build or the rendered
+   board is wrong and you will edit the wrong key.
+2. **The keycap legend.** The Power 2048 set is legended for a US/ANSI mental
+   model. On the ISO Nordic board the printed legend and the sent character part
+   ways on the keys around Enter, left Shift, and the top left.
+3. **The macOS input source.** `KC_GRV` produces backtick and tilde only under
+   **ABC**, which is the current selection. **Swedish - Pro** is also enabled on
+   this Mac, and under it the same physical key produces `§`, with backtick and
+   tilde living on the dead keys near `´` and `¨`.
 
-A more useful eventual purpose would be a **left-side** `MO(1)`, since every
-current Layer 1 access point is on the right.
+If a key suddenly stops producing what its cap says, check the input source
+first, the VIA layout option second, and only then suspect the firmware.
 
-## Neo65-specific base layer
+## Karabiner
 
-| Position | Mapping |
-| --- | --- |
-| Top-left | `KC_GRV` - backtick/tilde |
-| Caps Lock position | Must stay `KC_CAPS` |
-| Key immediately left of Left Arrow | `MO(1)` |
+Profile in use: **NeoCode**.
 
-The Caps Lock position is a hard constraint. Karabiner matches on the
-`caps_lock` key code, so remapping it in VIA silently breaks both tap-Escape and
-hold-Hyper.
+Global rules, applied to every keyboard:
 
-## Layer structure - open question
+- **Caps Lock** hold, Hyper (Control + Shift + Option + Command), used for app
+  launching and global shortcuts through Raycast
+- **Caps Lock** tap, Escape
+- **Double-tap Right Shift**, real Caps Lock toggle
 
-VIA exposes four layers on the Neo75 and all four differ. Determine whether
-layer 2 is the Windows base layer before using it for anything:
-
-- If layer 2 looks like a near-copy of layer 0 with only the bottom-row
-  modifiers reordered (Command/Option swapped for Win/Alt), it is the Windows
-  base layer and is spoken for. Every future base-layer change must then be made
-  twice, and the Windows-side layer key must be `MO(3)`, not `MO(1)`.
-- If layer 2 is unrelated to a base layout, it is genuinely free.
-
-This is no longer blocking, because the connection keycodes moved to Layer 1 and
-layers 2 and 3 are not needed for the current design.
-
-## Neo65 Cu tri-mode shortcuts - verify on arrival
-
-Firmware behaviour varies with revision. Verify these on the Neo65 before
-overwriting Layer 1, even though the Neo75 confirmed the keycodes are placeable:
-
-| Combination | Reported factory behaviour |
-| --- | --- |
-| Hold `Fn` + backtick/top-left position | Wired mode |
-| Hold `Fn` + `1` / `2` / `3` | Bluetooth profile 1 / 2 / 3 |
-| Hold `Fn` + `4` | 2.4 GHz mode |
-| `Fn` + Left Command/Win | macOS/Windows mode or Win lock, depending on press duration |
-| `Fn` + `D` | Battery status on some Neo65 Cu firmware |
-| Hold `Fn` + Delete | Factory reset on some Neo65 Cu firmware |
-
-**Factory reset.** Check whether this is a placeable keycode. If it is, do not
-place it anywhere; the physical reset button or holding Escape on plug-in covers
-the same need without a keyboard chord that can be hit by accident. If it is
-firmware-trapped instead, keep the Layer 1 Delete position free of anything used
-in normal work.
-
-Do not factory-reset the board after customisation without first exporting the
-VIA layout.
-
-## Navigation keys - arrival-day decision
-
-Match the Neo65 navigation column to the Neo75 wherever possible. Confirm the
-physical column and then document the final order for:
-
-- Delete
-- Home
-- End
-- Page Up
-- Page Down
-
-Likely layer fallbacks if there are insufficient dedicated positions:
-
-| Combination | Suggested output |
-| --- | --- |
-| `MO(1)` + Backspace | Delete |
-| `MO(1)` + Page Up | Home |
-| `MO(1)` + Page Down | End |
-
-Do not finalise these until the actual Neo65 PCB layout is visible in VIA.
-
-## Star21 numpad
-
-Hardware:
-
-- Matte black Star21
-- Durock Silent T1 Shrimp switches
-- Wireless use intended
-
-Keymap remains to be documented after confirming its configurator and layer
-support. Keep ordinary arithmetic keys intact. Num Lock may be repurposed on
-macOS if it proves unnecessary, but no essential Neo65 function should depend on
-the numpad being present.
-
-## Configuration dependencies
-
-- Keyboard mappings: VIA, stored onboard.
-- Neo65 Cu tri-mode configuration: connect by USB and load the correct tri-mode
-  JSON.
-- Caps tap-Escape / hold-Hyper and double-tap-Right-Shift Caps Lock:
-  Karabiner-Elements on macOS, `karabiner/.config/karabiner/karabiner.json` in
-  this repo.
-- The Karabiner behaviour does not automatically follow the keyboard to Windows,
-  iPadOS or another Mac.
-
-### Karabiner device identifiers
-
-Verified by `ioreg` on 2026-08-19:
+Per-device rules, verified by `ioreg` on 2026-08-19 and re-checked 2026-09-02:
 
 | Device | Vendor ID | Product ID | Karabiner remapping |
 | --- | --- | --- | --- |
-| NEO75 | 14000 | 12321 | None; global Caps Lock rule only |
-| Keychron (not currently connected) | 13364 | 3409 | Grave ↔ non-US-backslash swap |
+| NEO75 | 14000 (`0x36B0`) | 12321 (`0x3021`) | None; global Caps Lock rules only |
+| NEO (second entry) | 14000 (`0x36B0`) | 12292 (`0x3004`) | None; likely the same board on another connection mode |
+| Keychron (not currently connected) | 13364 (`0x3434`) | 3409 (`0x0D51`) | Grave ↔ non-US-backslash swap, an ANSI layout fix |
+| Weikav Stars21 | 13357 (`0x342D`) | 58691 (`0xE543`) | None; no device block yet |
 
 The grave/non-US-backslash swap belongs to the Keychron and to no other board.
 Neither the Neo75 nor the incoming Neo65 inherits it. Do not copy that device
 block for the Neo65 without first confirming the swap is actually wanted there.
+
+Caps Lock on the Neo65 must stay `KC_CAPS` in VIA. Karabiner matches on the
+`caps_lock` key code, so remapping it in firmware silently breaks both
+tap-Escape and hold-Hyper.
 
 ### Stow caveat
 
@@ -247,24 +194,35 @@ file into the repo before committing rather than relying on the symlink:
 cp ~/.config/karabiner/karabiner.json ~/.dotfiles/karabiner/.config/karabiner/karabiner.json
 ```
 
+## Configuration dependencies
+
+- Keyboard mappings: VIA, stored onboard, so they follow the board to any
+  machine.
+- Every board needs its VIA JSON sideloaded through the Design tab first. VIA
+  keeps sideloaded drafts in browser local storage, so clearing site data for
+  usevia.app means loading them again. That is why the JSONs live here.
+- Caps tap-Escape, hold-Hyper, and double-tap-Right-Shift Caps Lock:
+  Karabiner-Elements on macOS, `karabiner/.config/karabiner/karabiner.json` in
+  this repo.
+- The Karabiner behaviour does not automatically follow a keyboard to Windows,
+  iPadOS or another Mac. Anything essential belongs in firmware instead.
+
 ## Backup checklist
 
-After the Neo65 keymap is final:
+After a keymap is final:
 
-1. Export the Neo75 VIA layout into this directory.
-2. Export the Neo65 VIA layout into this directory.
-3. Sync the live Karabiner config into the repo (see stow caveat), commit, push.
-4. Record the installed firmware and JSON versions.
-5. Test wired, Bluetooth and 2.4 GHz mode switching.
-6. Test charging over the chosen USB-C-to-C cable.
-7. Test every Layer 1 binding before daily use.
+1. Export the VIA layout into that board's directory.
+2. Sync the live Karabiner config into the repo (see stow caveat), commit, push.
+3. Record the installed firmware and JSON versions in the board's README.
+4. Test wired, Bluetooth and 2.4 GHz mode switching.
+5. Test charging over the chosen USB-C-to-C cable.
+6. Test every Layer 1 binding before daily use.
 
-## Remaining decisions
+## Open cross-board decisions
 
-- Whether layer 2 is the Windows base layer.
-- Final Neo65 navigation-column order.
 - Final locations for brightness, volume and media controls, and whether the
-  media cluster moves to the left half.
-- Eventual use of the Neo75 top-right redundant `MO(1)`, likely a left-side
-  Layer 1 key instead.
-- Star21 numpad mappings.
+  media cluster moves to the left half on both boards.
+- Whether the Stars21 gets a Karabiner device block at all, or stays
+  firmware-only.
+
+Board-specific open questions live in each board's own README.

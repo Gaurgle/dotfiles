@@ -257,7 +257,7 @@ Each modifier has a dedicated role - no conflicts.
 
 | Key | Role |
 |-----|------|
-| Caps Lock | Hyper key (Ctrl+Shift+Alt+Cmd) via Karabiner - tap for Escape |
+| Caps Lock | Hyper key (Ctrl+Shift+Alt+Cmd) via Karabiner - tap for Escape (see `keyboards/`) |
 | Ctrl | tmux prefix (`C-a`) |
 | Cmd | macOS standard shortcuts |
 | Option (Alt) | AeroSpace window manager |
@@ -268,7 +268,11 @@ Each modifier has a dedicated role - no conflicts.
 
 - **Caps Lock** (hold) → Hyper key (Ctrl+Shift+Alt+Cmd) - app launching and global shortcuts via Raycast
 - **Caps Lock** (tap) → Escape
-- External keyboard: grave/tilde and non-US backslash swapped (ANSI layout fix)
+- **Double-tap Right Shift** → real Caps Lock toggle
+
+Per-device rules, the physical keyboards, their VIA definitions and their
+keymaps are documented in [`keyboards/`](keyboards/). That is the single source
+of truth; do not restate keyboard hardware details here.
 
 ### Raycast (Hyper key app shortcuts)
 
