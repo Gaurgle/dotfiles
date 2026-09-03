@@ -2,11 +2,13 @@
 
 Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/) and a package manifest, [`.dotcore`](.dotcore), driven by `dotsync`.
 
-> **Do not run `brew bundle`.** The `Brewfile` in this repo is a legacy
-> `brew bundle dump` snapshot that `.dotcore` replaced. It has no notion of the
-> optional sections, so it installs `mysql`, `postgresql@14`, `wireshark`,
-> `visual-studio-code`, `temurin@11` and a set of VS Code extensions on any
-> machine that runs it. Use `dotsync` (see [Setup](#setup-on-a-new-mac)).
+> **Do not run `brew bundle`.** This repo used to carry a `Brewfile`, a stale
+> `brew bundle dump` with no notion of the optional sections, so it installed
+> `mysql`, `postgresql@14`, `wireshark`, `visual-studio-code`, `temurin@11` and
+> 19 VS Code extensions on any machine that ran it. It was removed in `7ea172e`
+> and `.dotcore` is the only manifest now. Recover the old list if you ever need
+> it with `git show 7ea172e~1:Brewfile`. Use `dotsync`, see
+> [Setup](#setup-on-a-new-mac).
 
 ## Screenshots
 
