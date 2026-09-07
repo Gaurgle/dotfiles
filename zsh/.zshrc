@@ -116,6 +116,7 @@ plugins=(git)
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 command -v zoxide >/dev/null && eval "$(zoxide init zsh --hook pwd)"
+command -v fnm >/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
 
 # Aliases
 alias gitconf="bat ~/.gitconfig --language ini"
