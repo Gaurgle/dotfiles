@@ -10,7 +10,11 @@ extra_dirs = ["~/.dotfiles"]
 # because it is now a backstop -- the GitHub poll notices a moved remote and
 # fetches just that repo, so freshness no longer depends on this.
 refresh_interval = 300
-view = "detail"
+view = "auto"
 work_start = 9
 work_end = 18
 persist_pane_sizes = false
+github_poll_interval = 30
+watch = true
+contributions = "github"
+intro = true
