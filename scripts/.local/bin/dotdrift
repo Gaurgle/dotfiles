@@ -47,6 +47,27 @@ comm -13 <(cargo install --list 2>/dev/null | grep -E "^[a-zA-Z].* v" | awk '{pr
 echo "-- [pipx] --"
 comm -13 <(pipx list --short 2>/dev/null | awk '{print $1}' | sort) <(section pipx | sort)
 echo ""
+echo "=== Installed but outdated (brew) ==="
+# .dotcore only ever adds, and dotsync only installs what is missing, so nothing
+# in the normal flow ever upgrades a package. A tool can sit years behind on both
+# machines with no signal at all. Diagnostic only, like the rest of this script.
+# Only packages .dotcore names. Unfiltered, brew reports every transitive
+# library too, which buries the handful of tools you actually chose.
+wanted="$(cat <(section brew) <(section brew-langs) <(section brew-db) \
+  <(section brew-tap) <(section cask) <(section cask-langs) \
+  | sed 's|.*/||' | sort -u)"
+stale=0
+while IFS= read -r line; do
+  [[ -n "$line" ]] || continue
+  name="${line%% *}"
+  if print -r -- "$wanted" | grep -qx -- "${name##*/}"; then
+    echo "  $line"
+    stale=1
+  fi
+done < <(brew outdated --verbose 2>/dev/null)
+(( stale )) || echo "  (none)"
+
+echo ""
 echo "=== Stow packages: files in the repo with no link here ==="
 # Package drift and link drift are separate failures. A config can be committed
 # and its tool installed, yet never linked on this machine, so every check above
