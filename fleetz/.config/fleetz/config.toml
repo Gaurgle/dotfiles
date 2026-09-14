@@ -16,5 +16,5 @@ work_end = 18
 persist_pane_sizes = false
 github_poll_interval = 30
 watch = true
-contributions = "github"
+contributions = "off"
 intro = true
