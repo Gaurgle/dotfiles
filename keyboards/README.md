@@ -57,6 +57,10 @@ the other board" has to exist on that board, or go through Karabiner.
 `RCtrl` has been removed because it was not used. Its physical position is now
 the permanent Layer 1 key on both keyboards.
 
+Both boards have exactly two keys between Space and Left Arrow, confirmed on the
+Neo75 and the Neo65 build, so the right side reads `Space, RWin, MO(1), ←`.
+There is no third right-side modifier.
+
 ### Escape, Hyper and backtick
 
 | Input | Output |

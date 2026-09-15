@@ -23,7 +23,11 @@ re-checking key by key.
 | --- | --- |
 | Top-left | `KC_GRV`, backtick and tilde |
 | Caps Lock position | Must stay `KC_CAPS` |
+| First right of Space | `RWin` |
 | Key immediately left of Left Arrow | `MO(1)` |
+
+Bottom row confirmed at build: three keys left of Space, two right, so `RWin`
+and `MO(1)` are adjacent.
 
 The board has no dedicated Escape, so the top-left key is remapped from Escape
 to `KC_GRV` and Escape comes from Caps Lock tap, with `MO(1)` + backtick as the
