@@ -105,6 +105,7 @@ keepercommander                     # Keeper vault CLI (IMRSV shared secrets)
 
 [stow]
 aerospace                           # aerospace config
+android                             # ~/.androidrc (Android CLI default flags)
 bat                                 # bat config
 btop                                # btop config
 editorconfig                        # ~/.editorconfig (cross-editor indent rules)
@@ -149,6 +150,7 @@ swiftlint                   # Swift linter (sourcekit-lsp ships with Xcode)
 zig                         # Zig programming language
 
 [cask-langs]
+android-cli                 # Google's Android CLI for agents (`android`)
 basictex                    # minimal LaTeX distribution
 temurin@21                  # Eclipse OpenJDK 21 LTS
 
