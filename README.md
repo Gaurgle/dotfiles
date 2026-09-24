@@ -102,6 +102,8 @@ After initial setup, these commands manage the cross-machine sync. Run `dothelp`
 | `dotup` | Full sync: `dotsync && exec zsh` (also reloads the shell) |
 | `dotsync` | Pull repo, install missing packages from `.dotcore`, prompt for optional sections, stow core configs |
 | `dotdrift` | Diagnostic only - shows package drift (installed vs `.dotcore`) and link drift (repo files not linked, dangling links, links stow can't adopt). Run on each machine and `diff` outputs to compare across hosts |
+| `claudeup` | `claudesync && exec zsh` |
+| `claudesync` | Pull `~/claude-config` (separate repo) and link its files into `~/.claude/`; reports real files in the way instead of replacing them |
 | `dothelp` | Print a short cheatsheet of these commands |
 
 `dotsync` ends with a **gh auth health check**: `hosts.yml` is gitignored and local-only, but its stow symlink points into the repo, so a pull can leave it dangling and silently log out the `gh` CLI. The check warns and prints the `gh auth login` fix instead of leaving it a mystery.
@@ -475,6 +477,8 @@ Based on Mac OS X 10.5+ with custom overrides.
 | `dotup` | Full sync + shell reload (`dotsync && exec zsh`) |
 | `dotsync` | Pull dotfiles, install missing packages from `.dotcore`, prompt for optional sections, stow configs |
 | `dotdrift` | Show package drift vs `.dotcore` and stow link drift (diagnostic only) |
+| `claudeup` | `claudesync` + shell reload |
+| `claudesync` | Pull `~/claude-config` and link it into `~/.claude/` |
 | `repos` | Check GitHub repos for remote changes vs local state (see below) |
 
 **Tools:**

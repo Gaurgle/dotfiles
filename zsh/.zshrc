@@ -254,6 +254,10 @@ Diagnostics
   dotdrift   Package drift vs .dotcore, plus unlinked/dangling stow links
   dothelp    Show this help
 
+Claude config (~/claude-config, separate repo)
+  claudeup   claudesync, then reload the shell
+  claudesync Pull claude-config · link rules/skills/hooks/agents into ~/.claude
+
 Manifest: ~/.dotfiles/.dotcore  (sectioned, INI-ish).
 Add a tool there → commit → push → run `dotup` on the other machine.
 EOF
@@ -439,6 +443,57 @@ dotsync() {
 
   cd "$startdir"
 }
+# --- Claude config sync ---
+# ~/claude-config is its own repo; dotsync never touches it. claudesync pulls it
+# and (re)creates the ~/.claude symlinks the claude-config README describes.
+# Real files in the way are reported, never replaced: settings.json in particular
+# can hold machine-specific values that need reconciling by hand.
+alias claudeup='claudesync && exec zsh'
+
+claudesync() {
+  local repo="$HOME/claude-config"
+  if [[ ! -d "$repo/.git" ]]; then
+    echo "claudesync: $repo is not a git clone."
+    echo "  git clone git@github.com:Gaurgle/claude-config.git ~/claude-config"
+    return 1
+  fi
+
+  echo "==> Pulling latest claude-config..."
+  local before=$(git -C "$repo" rev-parse HEAD)
+  git -C "$repo" pull --ff-only || return 1
+  local after=$(git -C "$repo" rev-parse HEAD)
+  [[ "$before" != "$after" ]] && git -C "$repo" log --oneline "$before..$after"
+
+  mkdir -p "$HOME/.claude/agents"
+  local linked=0 blocked=()
+  local src dst
+  _claude_link() {
+    src="$1"; dst="$2"
+    [[ -L "$dst" && "$(readlink "$dst")" == "$src" ]] && return
+    if [[ -e "$dst" && ! -L "$dst" ]]; then
+      blocked+=("${dst/#$HOME/~}")
+      return
+    fi
+    ln -sfn "$src" "$dst" && { echo "==> Linked ${dst/#$HOME/~}"; ((linked++)); }
+  }
+
+  local f
+  for f in CLAUDE.md RTK.md settings.json rules skills hooks; do
+    _claude_link "$repo/$f" "$HOME/.claude/$f"
+  done
+  for f in "$repo"/agents/*.md(N); do
+    _claude_link "$f" "$HOME/.claude/agents/${f:t}"
+  done
+  unfunction _claude_link
+
+  [[ $linked -gt 0 ]] && echo "  Created $linked link(s)."
+  if [[ ${#blocked[@]} -gt 0 ]]; then
+    echo "  Not linked, a real file is in the way (move it aside, then rerun):"
+    printf "    %s\n" "${blocked[@]}"
+  fi
+  echo "==> claude-config in sync. Changes apply to new Claude Code sessions."
+}
+
 command -v atuin >/dev/null && eval "$(atuin init zsh)"
 export COLUMNS
 PATH=$(pyenv root)/shims:$PATH
