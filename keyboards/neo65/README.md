@@ -43,9 +43,20 @@ for 3 seconds toggles the mode (Caps Lock LED flashes 3 times).
 
 **Every base layer needs a working Fn key**, `MO(1)` on layer 0 and `MO(3)` on
 layer 2, left of Left Arrow. All mode switching, pairing and reset chords go
-through Fn. On 2026-09-27 the board woke in Mac mode with layer 2 customised and
-no Fn on it, stuck on BT2 with the Mac pairing forgotten, and no chord could
-reach USB. Put `MD_USB` on both Fn layers so wired mode is always reachable.
+through Fn. Put `MD_USB` on both Fn layers so wired mode is always reachable,
+and keep layers 1 and 3 identical so a mode flip changes nothing.
+
+**In Mac mode the Fn key must be `MO(3)`, never `MO(1)`.** QMK resolves each key
+from the highest active layer, and the default layer counts. With layer 2 as the
+base, `MO(1)` switches on a layer that sits below it, so layer 2 still wins and
+the key behaves as if Fn does nothing. Every other keycode works, which makes it
+look like a dead switch.
+
+On 2026-09-27 this caused a full lockout: the board was in Mac mode with no
+working Fn on layer 2, stuck on BT2 with the Mac pairing forgotten, and no
+chord could reach USB. Holding the Fn key still lights the connection LED, so
+that is no proof the layer switched; test with Fn + `3` in Karabiner-EventViewer,
+which should show `f3`.
 
 ## Base layer, board-specific
 
@@ -54,7 +65,7 @@ reach USB. Put `MD_USB` on both Fn layers so wired mode is always reachable.
 | Top-left | `KC_GRV`, backtick and tilde |
 | Caps Lock position | Must stay `KC_CAPS` |
 | First right of Space | `RWin` |
-| Key immediately left of Left Arrow | `MO(1)` |
+| Key immediately left of Left Arrow | `MO(1)` on layer 0, `MO(3)` on layer 2 |
 
 Bottom row confirmed at build: three keys left of Space, two right, so `RWin`
 and `MO(1)` are adjacent.
