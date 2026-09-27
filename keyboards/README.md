@@ -12,7 +12,7 @@ links here.
 | Board | Layout | Directory | VIA definition |
 | --- | --- | --- | --- |
 | QwertyKeys Neo75 CU | ANSI | `neo75/` | `neo75-via-definition.json`, V2 |
-| QwertyKeys Neo65 CU | ANSI | `neo65/` | not yet obtained |
+| QwertyKeys Neo65 CU | ANSI, split Backspace | `neo65/` | `neo65cu-via-definition.json`, V3 |
 | Weikav Stars21 numpad | 21-key numpad | `stars21/` | `s21-via-definition.json`, V3 |
 | Keychron (older, not in daily use) | unconfirmed | not documented | n/a |
 
@@ -21,8 +21,8 @@ database. Every one needs its JSON sideloaded through the Design tab. Keep the
 JSONs in this repo; vendor download links rot.
 
 **V2 versus V3 matters.** The Neo75 definition is a V2 file, so VIA needs
-Settings, "Use V2 definitions" turned on to load it. The Stars21 definition is
-V3 and needs that toggle off. If you configure both in one browser you will be
+Settings, "Use V2 definitions" turned on to load it. The Neo65 and Stars21
+definitions are V3 and need that toggle off. If you configure both in one browser you will be
 flipping it. Each board's own README records which format it is.
 
 ## Design principle

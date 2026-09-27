@@ -1,21 +1,51 @@
 # QwertyKeys Neo65 CU
 
-Last updated: 2026-09-02
+Last updated: 2026-09-27
 
-Not yet in hand. See `../README.md` for the shared base layer and Layer 1 this
-board must implement, and `../neo75/README.md` for the board it mirrors.
+Built with split Backspace. See `../README.md` for the shared base layer and
+Layer 1 this board must implement, and `../neo75/README.md` for the board it
+mirrors.
 
 ## VIA definition
 
-Not yet obtained. Get it from the vendor before the board arrives and commit it
-here. Tri-mode configuration needs the board connected by USB with the correct
-tri-mode JSON loaded; the wrong variant renders a board that does not match. Expect the same V2 format as the Neo75, and expect VIA's remote database
-not to have it.
+`neo65cu-via-definition.json`, the official tri-mode file from the
+[Qwertykeys firmware page](https://www.qwertykeys.com/pages/fw).
 
-ANSI, same as the Neo75, so the VIA Layouts options and the keycap legends
-carry over and the shared keymap transfers position for position. Verify on
-arrival anyway; if the board turns out to differ, the shared keymap needs
-re-checking key by key.
+| Field | Value |
+| --- | --- |
+| Name | `Neo 65Cu` |
+| Vendor ID | `0x36B0` |
+| Product ID | `0x3060` |
+| Matrix | 6 rows x 16 cols |
+| Format | **VIA V3** |
+
+V3, unlike the Neo75: VIA's Settings, "Use V2 definitions" must be **off**. The
+tri-mode PCB only works in VIA with the tri-mode JSON, and VIA only sees the
+board over USB in wired mode.
+
+Layout options: Split Backspace (**on**, matches the build), Split Enter, Split
+Left Shift, Bottom Row. Set them before editing any key.
+
+Custom keycodes: `MD_USB`, `MD_BLE1`, `MD_BLE2`, `MD_BLE3`, `MD_24G`, `QK_BAT`
+(battery), `QK_WLO` (Win lock), `SIX_N` (6KRO/NKRO), `SIRI`, `RGB_RTOG`,
+`U_EE_CLR` (EEPROM clear).
+
+Official firmware is `Neo_65Cu-v1.01.bin` on the same page. On macOS it flashes
+by copying the `.bin` onto the "No Name" disk the board mounts in DFU mode
+(battery switch off, hold the top-left key while plugging in USB). Qwertykeys
+advise against flashing to fix pairing or VIA problems; it is a last resort.
+
+## Layers: Windows is 0/1, Mac is 2/3
+
+From the official build guide: layers 0 and 1 are the **Windows** base and Fn
+layers, layers 2 and 3 are the **Mac** base and Fn layers. Holding `Fn` + LWin
+for 3 seconds toggles the mode (Caps Lock LED flashes 3 times).
+
+**Every base layer needs a working Fn key**, `MO(1)` on layer 0 and `MO(3)` on
+layer 2, left of Left Arrow. All mode switching, pairing and reset chords go
+through Fn. On 2026-09-27 the board woke in Mac mode with layer 2 customised and
+no Fn on it, stuck on BT2 with the Mac pairing forgotten, and no chord could
+reach USB. Put `MD_USB` on both Fn layers so wired mode is always reachable.
 
 ## Base layer, board-specific
 
@@ -37,19 +67,25 @@ The Caps Lock position is a hard constraint. Karabiner matches on the
 `caps_lock` key code, so remapping it in VIA silently breaks both tap-Escape and
 hold-Hyper.
 
-## Tri-mode shortcuts, verify on arrival
+## Tri-mode shortcuts
 
-Firmware behaviour varies with revision. Verify these before overwriting Layer
-1, even though the Neo75 confirmed the connection keycodes are placeable:
+Factory defaults from the official
+[Neo65 & 60 Cu build guide](https://qwertykeys.notion.site/Neo65-60-Cu-Build-Guide-1863d090094280babee7ce4ff3901aa8).
+`Fn` is the key left of Left Arrow.
 
-| Combination | Reported factory behaviour |
-| --- | --- |
-| Hold `Fn` + backtick/top-left position | Wired mode |
-| Hold `Fn` + `1` / `2` / `3` | Bluetooth profile 1 / 2 / 3 |
-| Hold `Fn` + `4` | 2.4 GHz mode |
-| `Fn` + Left Command/Win | macOS/Windows mode or Win lock, depending on press duration |
-| `Fn` + `D` | Battery status on some Neo65 CU firmware |
-| Hold `Fn` + Delete | Factory reset on some Neo65 CU firmware |
+| Combination | Tap | Hold 3 seconds |
+| --- | --- | --- |
+| `Fn` + Tab | Wired mode | n/a |
+| `Fn` + `Q` / `W` / `E` | Bluetooth 1 / 2 / 3 | Re-pair that slot |
+| `Fn` + `R` | 2.4 GHz mode | Re-pair the dongle |
+| `Fn` + LWin | Win key lock | Toggle Win/Mac mode |
+| `Fn` + `D` | Battery level on the 1-4 LEDs, 25% each | n/a |
+| `Fn` + Delete | n/a | Factory reset |
+
+LED under Esc/~ flashing means wired mode. A white indicator flashes fast while
+pairing and slowly while reconnecting; after 60 s without pairing or 20 s
+without reconnecting the board sleeps, and any key press wakes it to try again.
+The battery power switch is under Caps Lock.
 
 **Factory reset.** Check whether this is a placeable keycode. If it is, do not
 place it anywhere; the physical reset button or holding Escape on plug-in covers
@@ -83,5 +119,6 @@ Do not finalise these until the actual PCB layout is visible in VIA.
 
 ## Open questions
 
-- Whether layer 2 is the Windows base layer, same question as the Neo75.
+- Whether to live in Mac mode (layers 2/3) or Windows mode (layers 0/1). The
+  shared keymap in `../README.md` is written as layers 0/1.
 - Final navigation-column order.
