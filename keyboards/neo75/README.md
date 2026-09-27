@@ -71,6 +71,8 @@ Windows base layer before using it for anything:
   twice, and the Windows-side layer key must be `MO(3)`, not `MO(1)`.
 - If layer 2 is unrelated to a base layout, it is genuinely free.
 
-This is no longer blocking, because the connection keycodes moved to Layer 1 and
-layers 2 and 3 are not needed for the current design. The same question will
-apply to the Neo65.
+Answered on the Neo65 (2026-09-27): Qwertykeys use layers 0/1 for Windows and
+2/3 for Mac, with layer 2 as the Mac-mode base. Assume the same here until VIA
+shows otherwise. The plan is to port the Neo65 target keymap (two-thumb media
+layer on layer 3, see `../neo65/README.md`), which makes layers 2 and 3 matter:
+layer 2's Fn must be `MO(3)`, and media must never sit on layer 2.

@@ -58,6 +58,61 @@ chord could reach USB. Holding the Fn key still lights the connection LED, so
 that is no proof the layer switched; test with Fn + `3` in Karabiner-EventViewer,
 which should show `f3`.
 
+## Target keymap: two-thumb media layer
+
+Needs **Windows mode** (base layer 0), the only mode with two layers above the
+base, so it can hold an F-key layer and a separate media layer. macOS does not
+care which mode the board is in.
+
+| Layer | Role | Fn (left of ←) | First right of Space |
+| --- | --- | --- | --- |
+| 0 | Base, split-Backspace top row, `Del` top-right | `MO(1)` | `RWin` |
+| 1 | F1-F12 on the number row, connection keys | held | `MO(3)` |
+| 2 | Mac-mode fallback, copy of layer 0 | `MO(3)` | `RWin` |
+| 3 | Media on the number row, `MD_USB` on Tab, `U_EE_CLR` top-right | held | held |
+
+Hold Fn for F-keys, add the right-thumb key for media. This is the setup that
+worked before the rebuild, except that media moved from layer 2 to layer 3.
+**Media must never be on layer 2**: in Mac mode layer 2 becomes the base, and a
+media layer with no Fn key as the base is exactly the 2026-09-27 lockout.
+
+- Layer 2 is a copy of layer 0 except its Fn key, which must be `MO(3)`. If the
+  board flips to Mac mode, typing is unchanged and Fn reaches media and
+  `MD_USB`; only the F-keys are gone until the mode is switched back.
+- Connection keys use the factory placement on layers 1 and 3: `MD_USB` on
+  Tab, `MD_BLE1`-`3` on Q/W/E, `MD_24G` on R, so Qwertykeys' docs apply.
+- Keep `U_EE_CLR` top-right on layers 1 and 3. `Fn` + top-right held 3 s is the
+  factory reset, the only reset route that needs no reflash.
+
+## Status 2026-09-27: stuck in Mac mode, unresolved
+
+The board is in **Mac mode**: Fn goes to layer 3 (media), so the F-keys are
+unreachable. It was in Windows mode before the rebuild, so the Mac does not
+force Mac mode on connect. Tried without success:
+
+- `Fn` + the 2nd bottom-left key (`QK_WLO`, factory LWin position) held 3 s,
+  and `Fn` + the 3rd key (`LWin` in this layout). Possibly one attempt flipped
+  and the next flipped back; not retried one at a time with a test in between.
+- `DF(0)` placed on layer 3 `T` and pressed via Fn. Fn + `3` still gave the
+  layer 3 key afterwards, so either the firmware re-applies its saved mode or
+  `DF` is not honoured.
+
+The keymap on the board is close to the target table, with `DF(0)` still on
+layer 3 `T`. Next steps, in order:
+
+1. Retry the toggle once, carefully: hold Fn, hold the 2nd bottom-left key for
+   5 s, release, test Fn + `3` in Karabiner-EventViewer (`f3` means Windows
+   mode). Repeat once if it shows media.
+2. If that fails, factory reset (`Fn` + top-right, hold 3 s), check the mode,
+   use the factory toggle if needed, rebuild the target table from the layer
+   screenshots, then unplug and replug to confirm Windows mode sticks.
+3. Fallback if Windows mode will not stick: put F-keys and media on the same
+   Fn layer (F-row on the numbers, media on arrows and `M`/`J`/`K`/`L`), mirrored
+   on layers 1 and 3. Works in either mode, loses the two-thumb media layer.
+
+VIA's "Save Current Layout" download did not work from Chrome, so the layer
+screenshots are the only backup of the keymap.
+
 ## Base layer, board-specific
 
 | Position | Mapping |
@@ -98,11 +153,9 @@ pairing and slowly while reconnecting; after 60 s without pairing or 20 s
 without reconnecting the board sleeps, and any key press wakes it to try again.
 The battery power switch is under Caps Lock.
 
-**Factory reset.** Check whether this is a placeable keycode. If it is, do not
-place it anywhere; the physical reset button or holding Escape on plug-in covers
-the same need without a keyboard chord that can be hit by accident. If it is
-firmware-trapped instead, keep the Layer 1 Delete position free of anything used
-in normal work.
+**Factory reset** is the placeable `U_EE_CLR` keycode, not firmware-trapped.
+Holding the top-left key while powering up only enters DFU mode; it does not
+clear the saved connection mode, so `U_EE_CLR` is the real reset.
 
 Do not factory-reset the board after customisation without first exporting the
 VIA layout.
@@ -130,6 +183,5 @@ Do not finalise these until the actual PCB layout is visible in VIA.
 
 ## Open questions
 
-- Whether to live in Mac mode (layers 2/3) or Windows mode (layers 0/1). The
-  shared keymap in `../README.md` is written as layers 0/1.
+- Getting back to Windows mode, see the status section above.
 - Final navigation-column order.

@@ -1,6 +1,6 @@
 # Keyboards
 
-Last updated: 2026-09-02
+Last updated: 2026-09-27
 
 Single source of truth for the physical keyboards, their VIA definitions and
 keymaps, and the Karabiner rules that sit on top of them. Nothing about
@@ -89,7 +89,7 @@ held. Karabiner's default alone-timeout is 1000 ms, so a Caps Lock press held
 longer than one second and released without another key produces nothing. This
 is not noticeable at normal typing speed.
 
-## Shared Layer 1, Neo75 and Neo65
+## Shared layers 1 and 3, Neo75 and Neo65
 
 ### Escape
 
@@ -111,42 +111,34 @@ reachable from the numpad regardless of which main board is connected. See
 
 ### Connection control
 
-The wireless keycodes are exposed in VIA as ordinary placeable keycodes
-(`USB`, `BLE1`, `BLE2`, `BLE3`), confirmed on the Neo75. They are not trapped in
-firmware, so the factory `Fn + 1/2/3/4` placement is only a default and can be
-moved freely. Relocating them to the `QWERT` row removes the collision with
-F1-F4 entirely.
+The wireless keycodes are ordinary placeable VIA keycodes (`MD_USB`,
+`MD_BLE1`-`3`, `MD_24G`), confirmed on both boards. Both use the Neo65 CU
+factory placement, so Qwertykeys' docs and support apply as written:
 
 | Combination | Output |
 | --- | --- |
-| `MO(1)` + `Q` | `USB` |
-| `MO(1)` + `W` | `BLE1` |
-| `MO(1)` + `E` | `BLE2` |
-| `MO(1)` + `R` | `BLE3` |
-| `MO(1)` + `T` | 2.4 GHz |
+| `MO(1)` + Tab | USB |
+| `MO(1)` + `Q` / `W` / `E` | Bluetooth 1 / 2 / 3 (hold 3 s to re-pair) |
+| `MO(1)` + `R` | 2.4 GHz |
 
-Bound on both boards, so the connection block reads `USB, 1, 2, 3, 2.4` from
-left to right and the two keymaps stay spatially identical. Harmless on the
-Neo75 even if it never uses the dongle: an unused connection keycode does
-nothing rather than misfiring.
+All on the left hand, so nothing competes with the right-side `MO(1)`. Harmless
+on the Neo75 even if it never uses the dongle.
 
-All five sit on the left hand, so nothing competes with the right-side `MO(1)`.
+### Media layer, layer 3
 
-### Media and system
+Media keys live on their own layer, reached by holding Fn and then the **first
+key right of Space** (`MO(3)` on layer 1), both with the right thumb. Layer 3
+carries media on the number row plus `MD_USB` on Tab as a second way back to
+wired. The earlier media chords on the arrows, `M` and `J`/`K`/`L` were dropped.
 
-| Combination | Output |
-| --- | --- |
-| `MO(1)` + Left / Right | Screen brightness down / up |
-| `MO(1)` + Down / Up | Volume down / up |
-| `MO(1)` + `M` | Mute |
-| `MO(1)` + `J` / `K` / `L` | Previous / Play-Pause / Next |
+This relies on the Qwertykeys layer scheme: layers 0/1 are the Windows base and
+Fn layers, 2/3 the Mac ones, and the boards must run in **Windows mode** so both
+layer 1 and layer 3 sit above the base. Media must never sit on layer 2, which
+is the Mac-mode base. Layer 2 is a copy of layer 0 whose Fn key is `MO(3)`,
+never `MO(1)`. See `neo65/README.md` for the full table, why `MO(1)` fails from
+layer 2, and the open Mac-mode problem on the Neo65.
 
-Note: `M` and `J`/`K`/`L` are right-hand keys and `MO(1)` is a right-side key,
-so these are same-hand chords. Consider moving them to the left half
-(`Z`/`X`/`C`, `A`/`S`/`D`) if they prove awkward in daily use. The arrow
-bindings are fine, since `MO(1)` sits directly beside the arrow cluster.
-
-Unused Layer 1 positions should normally be `KC_TRNS`, not `KC_NO`, so their
+Unused Fn-layer positions should normally be `KC_TRNS`, not `KC_NO`, so their
 base-layer behaviour passes through.
 
 ## Legends versus what the key actually sends
@@ -234,8 +226,9 @@ After a keymap is final:
 
 ## Open cross-board decisions
 
-- Final locations for brightness, volume and media controls, and whether the
-  media cluster moves to the left half on both boards.
+- Port the Neo65 target keymap to the Neo75 once the Neo65 is confirmed in
+  Windows mode. The Neo75's layer scheme (Windows 0/1, Mac 2/3) is assumed from
+  the Neo65 and still needs checking in VIA.
 - Whether the Stars21 gets a Karabiner device block at all, or stays
   firmware-only.
 
