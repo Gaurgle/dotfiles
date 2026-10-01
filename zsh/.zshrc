@@ -494,6 +494,48 @@ claudesync() {
   echo "==> claude-config in sync. Changes apply to new Claude Code sessions."
 }
 
+# --- Relay: start the lead agent for the current repo ---
+# relay        Claude lead, found from .claude/agents/*-coordinator.md
+# relay codex  Codex lead, via the relay-lead profile (~/.codex/relay-lead.config.toml)
+# Set a repo up first with /relay inside claude. See the relay skill in claude-config.
+relay() {
+  local top
+  top=$(git rev-parse --show-toplevel 2>/dev/null) || {
+    echo "relay: not inside a git repo."
+    return 1
+  }
+
+  if [[ "$1" == "codex" ]]; then
+    shift
+    if [[ ! -f "$HOME/.codex/relay-lead.config.toml" ]]; then
+      echo "relay: ~/.codex/relay-lead.config.toml is missing. Create it with:"
+      echo '  model = "<current top Codex model>"'
+      echo '  model_reasoning_effort = "high"'
+      return 1
+    fi
+    (cd "$top" && codex -p relay-lead "$@" \
+      "Read AGENTS.md and docs/agent-handoff.md, then take over as the Relay lead.")
+    return
+  fi
+
+  local -a leads=("$top"/.claude/agents/*-coordinator.md(N))
+  if [[ ${#leads[@]} -eq 0 ]]; then
+    echo "relay: no Relay lead in ${top:t}. Start claude here and type /relay to set it up."
+    return 1
+  fi
+  if [[ ${#leads[@]} -gt 1 ]]; then
+    echo "relay: more than one lead in ${top:t}; start one with claude --agent <name>:"
+    printf "  %s\n" "${leads[@]:t:r}"
+    return 1
+  fi
+
+  local name
+  name=$(sed -n 's/^name:[[:space:]]*//p' "${leads[1]}" | head -1)
+  [[ -n "$name" ]] || name="${leads[1]:t:r}"
+  echo "==> Starting Relay lead $name in ${top:t}"
+  (cd "$top" && claude --agent "$name" "$@")
+}
+
 command -v atuin >/dev/null && eval "$(atuin init zsh)"
 export COLUMNS
 PATH=$(pyenv root)/shims:$PATH
