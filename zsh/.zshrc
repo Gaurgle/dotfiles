@@ -477,6 +477,11 @@ claudesync() {
     ln -sfn "$src" "$dst" && { echo "==> Linked ${dst/#$HOME/~}"; ((linked++)); }
   }
 
+  # The /model picker writes a machine-local default into settings.json; this
+  # filter (named in claude-config's .gitattributes) keeps it out of commits.
+  git -C "$repo" config filter.local-model.clean "jq --indent 2 'del(.model)'"
+  git -C "$repo" config filter.local-model.smudge cat
+
   local f
   for f in CLAUDE.md RTK.md settings.json rules skills hooks; do
     _claude_link "$repo/$f" "$HOME/.claude/$f"
