@@ -546,3 +546,5 @@ export COLUMNS
 PATH=$(pyenv root)/shims:$PATH
 PATH=$(pyenv root)/shims:$PATH
 PATH=$(pyenv root)/shims:$PATH
+PATH=$(pyenv root)/shims:$PATH
+PATH=$(pyenv root)/shims:$PATH
