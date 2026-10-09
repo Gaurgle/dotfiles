@@ -9,13 +9,13 @@ extra_dirs = ["~/.dotfiles", "~/claude-config"]
 # Blanket sweep: local git status plus a fetch from every remote. Generous
 # because it is now a backstop -- the GitHub poll notices a moved remote and
 # fetches just that repo, so freshness no longer depends on this.
-refresh_interval = 300
+refresh_interval = 5
 view = "auto"
 work_start = 9
 work_end = 18
 persist_pane_sizes = false
 github_poll_interval = 30
-watch = true
+watch = false
 contributions = "github"
 intro = true
 contributions_cell_size = "medium"
