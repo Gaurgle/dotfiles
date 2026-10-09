@@ -72,6 +72,10 @@ dotsync
 # Create notes directory
 mkdir -p ~/notes/0_quick-notes
 
+# Install rtk yourself first; it is not in .dotcore because dotsync could not
+# see a copy in ~/.local/bin and kept trying to build rtk and LLVM from source.
+# Either `brew install rtk` (check that it pours a bottle) or put the release
+# binary in ~/.local/bin.
 # Wire rtk into Claude Code (compresses Bash tool output, ~80% token savings)
 # Adds @RTK.md to ~/.claude/CLAUDE.md and a PreToolUse hook to ~/.claude/settings.json
 rtk init -g
